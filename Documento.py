@@ -1,6 +1,7 @@
 from io import open
 from collections import Counter
 from tabulate import tabulate
+import numpy
 import math
 import os
 
@@ -45,11 +46,11 @@ class Documentos():
     def frecuencia(self):
         docs = self.lista_palabras()
         frec = []
+        res = []
         for palabras in docs:
             frec.append(Counter(palabras))
-        for i in frec:
-            print("i:", dict(i))
-        return frec
+        [res.append(list(i.items())) for i in frec]
+        return res
 
     # Nº de veces que aparece una palabra en documentos distintos
     def frecuencia_documental(self):
@@ -76,18 +77,26 @@ class Documentos():
             # print("{} = {}".format(palabra,self.num_docs/frec_doc[palabra]))
             res[palabra] = math.log10(self.num_docs / frec_doc[palabra])
         return res
+
     # Para cada documento tenemos que calcular el peso:
     # Wi= frecuencia · frec_doc_inversa
     def peso(self):
         frec = self.frecuencia()
-        print(frec)
-        pass
+        frec_inversa = self.frecuencia_documental_inversa()
+        peso = []
+        pesos = []
+        for i in range(len(frec)):
+            for j in range(len(frec[i])):
+                # print("frec",type(frec.__getattribute__('el')))
+                # print("inv",frec_inversa.get(frec[i][0]))
+                peso.append((frec[i][j][0], frec_inversa.get(frec[i][j][0])))
+        return peso
 
 
 doc = Documentos()
 # print("Leemos los documentos\n", doc.leer_documentos())
 # print("Listamos las palabras de los documentos\n", doc.lista_palabras())
-# print("Frecuencia de palabras en los docs\n", doc.frecuencia())
-# print("Frecuencia docs\n", doc.frecuencia_documental())
-# print("Frecuencia docs inversa\n", doc.frecuencia_documental_inversa())
-doc.peso()
+print("Frecuencia de palabras en los docs\n", doc.frecuencia())
+print("Frecuencia docs\n", doc.frecuencia_documental())
+print("Frecuencia docs inversa\n", doc.frecuencia_documental_inversa())
+print("Peso\n", doc.peso())
