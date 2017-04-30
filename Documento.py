@@ -83,14 +83,15 @@ class Documentos():
     def peso(self):
         frec = self.frecuencia()
         frec_inversa = self.frecuencia_documental_inversa()
-        peso = []
         pesos = []
         for i in range(len(frec)):
+            peso = []
             for j in range(len(frec[i])):
                 # print("frec",type(frec.__getattribute__('el')))
                 # print("inv",frec_inversa.get(frec[i][0]))
                 peso.append((frec[i][j][0], frec_inversa.get(frec[i][j][0])))
-        return peso
+            pesos.append(peso)
+        return pesos
 
 
 doc = Documentos()
