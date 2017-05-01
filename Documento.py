@@ -64,7 +64,6 @@ class Documentos():
                     frec[palabra][1] += 1
                 else:
                     frec[palabra] = [i, 1]
-        # print(frec)
         for palabra in frec.keys():
             frec[palabra] = frec.get(palabra)[1]
 
@@ -97,11 +96,19 @@ class Documentos():
             pesos.append(peso)
         return pesos
 
+    # 2.2 Proximidad entre documentos y consultas
+    def proximidad(self, v):
+        pesos = self.peso()
+
+        for w in pesos:
+            print(w)
+
 
 doc = Documentos()
-print("Leemos los documentos\n", doc.leer_documentos())
+# print("Leemos los documentos\n", doc.leer_documentos())
 # print("Listamos las palabras de los documentos:\n", doc.lista_palabras())
-print("Frecuencia de palabras en los docs:\n", doc.frecuencia())
+# print("Frecuencia de palabras en los docs:\n", doc.frecuencia())
 # print("Frecuencia docs:\n", doc.frecuencia_documental())
-print("Frecuencia docs inversa:\n", doc.frecuencia_documental_inversa())
-print("Peso:\n", doc.peso())
+# print("Frecuencia docs inversa:\n", doc.frecuencia_documental_inversa())
+# print("Peso:\n", doc.peso())
+print("Proximidad:", doc.proximidad((0, 0, 0, 0, 0.1761, 0.4771, 0, 0.1761, 0)))
