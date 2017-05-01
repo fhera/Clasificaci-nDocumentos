@@ -33,12 +33,13 @@ class Documentos():
         return docs
 
     # Transforma el texto de cada documento en una lista de palabras
+    # TODO: quitar las palabras que no sean claves en el documento
     def lista_palabras(self):
         lista = self.leer_documentos()
         lista_palabras = []
-        for i in range(len(lista)):
-            for documento in lista[i]:
-                palabras = documento.replace("\n", "").split(' ')
+        for documento in range(len(lista)):
+            for palabra in lista[documento]:
+                palabras = palabra.replace("\n", "").split(' ')
                 lista_palabras.append([i.lower() for i in palabras])
         return lista_palabras
 
@@ -63,6 +64,7 @@ class Documentos():
                     frec[palabra][1] += 1
                 else:
                     frec[palabra] = [i, 1]
+        # print(frec)
         for palabra in frec.keys():
             frec[palabra] = frec.get(palabra)[1]
 
@@ -84,20 +86,22 @@ class Documentos():
         frec = self.frecuencia()
         frec_inversa = self.frecuencia_documental_inversa()
         pesos = []
-        for i in range(len(frec)):
+        for documentos in range(len(frec)):
             peso = []
-            for j in range(len(frec[i])):
+            for tuplas in range(len(frec[documentos])):
                 # print("frec",type(frec.__getattribute__('el')))
                 # print("inv",frec_inversa.get(frec[i][0]))
-                peso.append((frec[i][j][0], frec_inversa.get(frec[i][j][0])))
+                peso.append((frec[documentos][tuplas][0],
+                             frec_inversa.get(frec[documentos][tuplas][0]) *
+                             frec[documentos][tuplas][1]))
             pesos.append(peso)
         return pesos
 
 
 doc = Documentos()
-# print("Leemos los documentos\n", doc.leer_documentos())
-# print("Listamos las palabras de los documentos\n", doc.lista_palabras())
-print("Frecuencia de palabras en los docs\n", doc.frecuencia())
-print("Frecuencia docs\n", doc.frecuencia_documental())
-print("Frecuencia docs inversa\n", doc.frecuencia_documental_inversa())
-print("Peso\n", doc.peso())
+print("Leemos los documentos\n", doc.leer_documentos())
+# print("Listamos las palabras de los documentos:\n", doc.lista_palabras())
+print("Frecuencia de palabras en los docs:\n", doc.frecuencia())
+# print("Frecuencia docs:\n", doc.frecuencia_documental())
+print("Frecuencia docs inversa:\n", doc.frecuencia_documental_inversa())
+print("Peso:\n", doc.peso())
