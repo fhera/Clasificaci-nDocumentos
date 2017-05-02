@@ -4,6 +4,7 @@ from tabulate import tabulate
 import numpy
 import math
 import os
+import codecs
 
 
 class Documentos():
@@ -26,22 +27,44 @@ class Documentos():
         lista_documentos = self.documentos
         docs = []
         for i in range(len(lista_documentos)):
-            fichero = open("Documentos/{}".format(lista_documentos[i]), "r")
+            fichero = open("Documentos/{}".format(lista_documentos[i]), "r", encoding='UTF-8')
             texto = fichero.readlines()
             fichero.close()
             docs.append(texto)
         return docs
 
+    # Lee del archivo de palabras que no son claves, las palabras.
+    def leer_palabras_no_claves(self):
+        palabras_no_claves = []
+        fichero = open("PalabrasNoClaves/palabras.txt", "r")
+        text = fichero.readlines()
+        fichero.close()
+        for palabra in text:
+            palabras = palabra.replace("\n", "").split(' ')
+            palabras_no_claves.extend(palabras)
+
+        return palabras_no_claves
+
     # Transforma el texto de cada documento en una lista de palabras
     # TODO: quitar las palabras que no sean claves en el documento
     def lista_palabras(self):
         lista = self.leer_documentos()
+        palabras_no_claves = self.leer_palabras_no_claves()
         lista_palabras = []
+        # lista_palabras_def = []
         for documento in range(len(lista)):
             for palabra in lista[documento]:
                 palabras = palabra.replace("\n", "").split(' ')
                 lista_palabras.append([i.lower() for i in palabras])
-        return lista_palabras
+        # for peque_lista in lista_palabras:
+        #     palabras_limpias = []
+        #     for i in peque_lista:
+        #         if i not in palabras_no_claves:
+        #             palabras_limpias.append(i)
+        #     lista_palabras_def.append(palabras_limpias)
+        return lista_palabras_def
+        # return lista_palabras_def
+
 
     # Frecuencia con la que aparece una palabra en cada documento
     def frecuencia(self):
@@ -106,9 +129,10 @@ class Documentos():
 
 doc = Documentos()
 # print("Leemos los documentos\n", doc.leer_documentos())
+# print("Listamos las palabras que no queremos: \n", doc.leer_palabras_no_claves())
 # print("Listamos las palabras de los documentos:\n", doc.lista_palabras())
 # print("Frecuencia de palabras en los docs:\n", doc.frecuencia())
 # print("Frecuencia docs:\n", doc.frecuencia_documental())
 # print("Frecuencia docs inversa:\n", doc.frecuencia_documental_inversa())
 # print("Peso:\n", doc.peso())
-print("Proximidad:", doc.proximidad((0, 0, 0, 0, 0.1761, 0.4771, 0, 0.1761, 0)))
+# print("Proximidad:", doc.proximidad((0, 0, 0, 0, 0.1761, 0.4771, 0, 0.1761, 0)))
