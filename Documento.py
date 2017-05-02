@@ -1,6 +1,6 @@
 from io import open
 from collections import Counter
-from tabulate import tabulate
+# from tabulate import tabulate
 import numpy
 import math
 import os
@@ -40,6 +40,8 @@ class Documentos():
         for documento in range(len(lista)):
             for palabra in lista[documento]:
                 palabras = palabra.replace("\n", "").split(' ')
+                # Esto es por si queremos ordenar las palabras
+                # palabras = sorted(palabras)
                 lista_palabras.append([i.lower() for i in palabras])
         return lista_palabras
 
@@ -97,11 +99,23 @@ class Documentos():
         return pesos
 
     # 2.2 Proximidad entre documentos y consultas
+    # numpy.convolve(lista_w[1], v) -> Multiplicacion vectorial
     def proximidad(self, v):
         pesos = self.peso()
-
-        for w in pesos:
-            print(w)
+        lista_w = []
+        # [lista_w.append([i[1] for i in w]) for w in pesos]
+        [lista_w.append([i[1] for i in w if i[0] in ["camión", "llegó",'dañado','entrega','fuego','oro','plata','cargamento','color']]) for w in pesos]
+        print(lista_w[1])
+        print(v)
+        print("multiplicación",numpy.convolve(lista_w[1],v))
+        for i in range(len(lista_w)):
+            # print("lista{}".format(i),lista_w[i])
+            # print("sum{}".format(i),sum(lista_w[i]))
+            print("divisor{}:".format(i),sum(numpy.convolve(lista_w[i], v)))
+            print("dividendo{}:".format(i),math.sqrt(sum(lista_w[i])**2) * math.sqrt(sum(v)**2))
+            print("sim{}".format(i),sum(numpy.convolve(lista_w[i], v)) /
+                  (math.sqrt(sum(lista_w[i])**2)) *
+                   math.sqrt(sum(v)**2))
 
 
 doc = Documentos()
@@ -111,4 +125,4 @@ doc = Documentos()
 # print("Frecuencia docs:\n", doc.frecuencia_documental())
 # print("Frecuencia docs inversa:\n", doc.frecuencia_documental_inversa())
 # print("Peso:\n", doc.peso())
-print("Proximidad:", doc.proximidad((0, 0, 0, 0, 0.1761, 0.4771, 0, 0.1761, 0)))
+print("Proximidad:", doc.proximidad([0, 0, 0, 0, 0.1761, 0.4771, 0, 0.1761, 0]))
