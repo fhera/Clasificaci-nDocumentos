@@ -1,6 +1,6 @@
 from io import open
 from collections import Counter
-# from tabulate import tabulate
+from tabulate import tabulate
 import numpy
 import math
 import os
@@ -51,32 +51,35 @@ class Documentos():
         lista = self.leer_documentos()
         palabras_no_claves = self.leer_palabras_no_claves()
         lista_palabras = []
-        # lista_palabras_def = []
+        lista_palabras_def = []
         for documento in range(len(lista)):
             for palabra in lista[documento]:
                 palabras = palabra.replace("\n", "").split(' ')
                 # Esto es por si queremos ordenar las palabras
-                # palabras = sorted(palabras)
+                palabras = sorted(palabras)
                 lista_palabras.append([i.lower() for i in palabras])
-        # for peque_lista in lista_palabras:
-        #     palabras_limpias = []
-        #     for i in peque_lista:
-        #         if i not in palabras_no_claves:
-        #             palabras_limpias.append(i)
-        #     lista_palabras_def.append(palabras_limpias)
+        # El siguiente bucle va a quitar las palabrasNoClave
+        for peque_lista in lista_palabras:
+            palabras_limpias = []
+            for i in peque_lista:
+                if i not in palabras_no_claves:
+                    palabras_limpias.append(i)
+            lista_palabras_def.append(palabras_limpias)
         return lista_palabras_def
-        # return lista_palabras_def
-
 
     # Frecuencia con la que aparece una palabra en cada documento
     def frecuencia(self):
         docs = self.lista_palabras()
         frec = []
-        res = []
+        # En res guardamos todas las palabras que aparecen en todos los docs
+        res = [palabra for palabras in docs for palabra in palabras]
+        c = Counter()
         for palabras in docs:
-            frec.append(Counter(palabras))
-        [res.append(list(i.items())) for i in frec]
-        return res
+            for palabra in res:
+                c[palabra] = 0
+            c.update(palabras)
+            frec.append(sorted(list(c.items()))) #Sorted ordena por orden natural
+        return frec
 
     # Nº de veces que aparece una palabra en documentos distintos
     def frecuencia_documental(self):
@@ -113,7 +116,6 @@ class Documentos():
         for documentos in range(len(frec)):
             peso = []
             for tuplas in range(len(frec[documentos])):
-                # print("frec",type(frec.__getattribute__('el')))
                 # print("inv",frec_inversa.get(frec[i][0]))
                 peso.append((frec[documentos][tuplas][0],
                              frec_inversa.get(frec[documentos][tuplas][0]) *
@@ -126,19 +128,21 @@ class Documentos():
     def proximidad(self, v):
         pesos = self.peso()
         lista_w = []
-        # [lista_w.append([i[1] for i in w]) for w in pesos]
-        [lista_w.append([i[1] for i in w if i[0] in ["camión", "llegó",'dañado','entrega','fuego','oro','plata','cargamento','color']]) for w in pesos]
-        print(lista_w[1])
+        [lista_w.append([i[1] for i in w]) for w in pesos]
+        # [lista_w.append([i[1] for i in w if
+        #                  i[0] in ["camión", "llegó", 'dañado', 'entrega', 'fuego', 'oro', 'plata', 'cargamento',
+        #                           'color']]) for w in pesos]
+        print(lista_w)
         print(v)
-        print("multiplicación",numpy.convolve(lista_w[1],v))
+        print("multiplicación", numpy.convolve(lista_w[1], v))
         for i in range(len(lista_w)):
             # print("lista{}".format(i),lista_w[i])
             # print("sum{}".format(i),sum(lista_w[i]))
-            print("divisor{}:".format(i),sum(numpy.convolve(lista_w[i], v)))
-            print("dividendo{}:".format(i),math.sqrt(sum(lista_w[i])**2) * math.sqrt(sum(v)**2))
-            print("sim{}".format(i),sum(numpy.convolve(lista_w[i], v)) /
-                  (math.sqrt(sum(lista_w[i])**2)) *
-                   math.sqrt(sum(v)**2))
+            print("divisor{}:".format(i), sum(numpy.convolve(lista_w[i], v)))
+            print("dividendo{}:".format(i), math.sqrt(sum(lista_w[i]) ** 2) * math.sqrt(sum(v) ** 2))
+            print("sim{}".format(i), sum(numpy.convolve(lista_w[i], v)) /
+                  (math.sqrt(sum(lista_w[i]) ** 2)) *
+                  math.sqrt(sum(v) ** 2))
 
 
 doc = Documentos()
@@ -149,4 +153,4 @@ doc = Documentos()
 # print("Frecuencia docs:\n", doc.frecuencia_documental())
 # print("Frecuencia docs inversa:\n", doc.frecuencia_documental_inversa())
 # print("Peso:\n", doc.peso())
-# print("Proximidad:", doc.proximidad((0, 0, 0, 0, 0.1761, 0.4771, 0, 0.1761, 0)))
+print("Proximidad:", doc.proximidad([0.1761, 0, 0, 0, 0, 0, 0, 0.1761, 0.4771]))
