@@ -1,10 +1,8 @@
 from io import open
 from collections import Counter
-from tabulate import tabulate
-import numpy
+import numpy as np
 import math
 import os
-import codecs
 
 
 class Documentos():
@@ -78,7 +76,7 @@ class Documentos():
             for palabra in res:
                 c[palabra] = 0
             c.update(palabras)
-            frec.append(sorted(list(c.items()))) #Sorted ordena por orden natural
+            frec.append(sorted(list(c.items())))  # Sorted ordena por orden natural
         return frec
 
     # Nº de veces que aparece una palabra en documentos distintos
@@ -94,8 +92,6 @@ class Documentos():
                     frec[palabra] = [i, 1]
         for palabra in frec.keys():
             frec[palabra] = frec.get(palabra)[1]
-
-        # print(tabulate(frec))
         return frec
 
     # log(N/frec_documental) -> N=nº total de documentos
@@ -124,28 +120,23 @@ class Documentos():
         return pesos
 
     # 2.2 Proximidad entre documentos y consultas
-    # numpy.convolve(lista_w[1], v) -> Multiplicacion vectorial
+    # numpy.dot(lista_w[1], v) -> Multiplicación escalar
     def proximidad(self, v):
         pesos = self.peso()
         lista_w = []
         [lista_w.append([i[1] for i in w]) for w in pesos]
-        # [lista_w.append([i[1] for i in w if
-        #                  i[0] in ["camión", "llegó", 'dañado', 'entrega', 'fuego', 'oro', 'plata', 'cargamento',
-        #                           'color']]) for w in pesos]
-        print(lista_w)
-        print(v)
-        print("multiplicación", numpy.convolve(lista_w[1], v))
+        res = []
         for i in range(len(lista_w)):
-            # print("lista{}".format(i),lista_w[i])
-            # print("sum{}".format(i),sum(lista_w[i]))
-            print("divisor{}:".format(i), sum(numpy.convolve(lista_w[i], v)))
-            print("dividendo{}:".format(i), math.sqrt(sum(lista_w[i]) ** 2) * math.sqrt(sum(v) ** 2))
-            print("sim{}".format(i), sum(numpy.convolve(lista_w[i], v)) /
-                  (math.sqrt(sum(lista_w[i]) ** 2)) *
-                  math.sqrt(sum(v) ** 2))
+            # print("divisor{}:".format(i), np.dot(lista_w[i], v))
+            # print("dividendo{}:".format(i), (math.sqrt(np.dot(lista_w[i], lista_w[i])) *
+            #                                  math.sqrt(np.dot(v, v))))
+            res.append(np.dot(lista_w[i], v) /
+                  (math.sqrt(np.dot(lista_w[i], lista_w[i])) *
+                   math.sqrt(np.dot(v, v))))
+        return res
 
 
-doc = Documentos()
+# doc = Documentos()
 # print("Leemos los documentos\n", doc.leer_documentos())
 # print("Listamos las palabras que no queremos: \n", doc.leer_palabras_no_claves())
 # print("Listamos las palabras de los documentos:\n", doc.lista_palabras())
@@ -153,4 +144,4 @@ doc = Documentos()
 # print("Frecuencia docs:\n", doc.frecuencia_documental())
 # print("Frecuencia docs inversa:\n", doc.frecuencia_documental_inversa())
 # print("Peso:\n", doc.peso())
-print("Proximidad:", doc.proximidad([0.1761, 0, 0, 0, 0, 0, 0, 0.1761, 0.4771]))
+# print("Proximidad:", doc.proximidad([0.1761, 0, 0, 0, 0, 0, 0, 0.1761, 0.4771]))
