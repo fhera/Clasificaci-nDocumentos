@@ -6,30 +6,21 @@ import os
 
 
 class Documentos():
-    documentos = []
+    documentos = ()
     num_docs = 0
 
     # Constructor que coge los documentos de la ruta indicada en scandir
     # y guarda los nombres en una lista de documentos.
-    def __init__(self):
-        lista_documentos = []
-        with os.scandir("./Documentos") as it:
-            for entry in it:
-                if not entry.name.startswith('.') and entry.is_file():
-                    lista_documentos.append(entry.name)
-        self.documentos = lista_documentos
-        self.num_docs = len(lista_documentos)
-
-    # Lee los documentos y guarda en una lista el texto de cada documento
-    def leer_documentos(self):
-        lista_documentos = self.documentos
+    def __init__(self, root):
         docs = []
-        for i in range(len(lista_documentos)):
-            fichero = open("Documentos/{}".format(lista_documentos[i]), "r", encoding='UTF-8')
-            texto = fichero.readlines()
-            fichero.close()
-            docs.append(texto)
-        return docs
+        tipos = []
+        for r, dirs, files in os.walk(root):
+            for file in files:
+                with open(os.path.join(r, file), "r") as f:
+                    docs.append(f.read())
+                tipos.append(r.replace(root, ''))
+        self.documentos = dict([('docs', docs), ('tipos', tipos)])
+        self.num_docs = len(self.documentos) + 1
 
     # Lee del archivo de palabras que no son claves, las palabras.
     def leer_palabras_no_claves(self):
@@ -46,16 +37,15 @@ class Documentos():
     # Transforma el texto de cada documento en una lista de palabras
     # TODO: quitar las palabras que no sean claves en el documento
     def lista_palabras(self):
-        lista = self.leer_documentos()
+        lista = self.documentos['docs']
         palabras_no_claves = self.leer_palabras_no_claves()
         lista_palabras = []
         lista_palabras_def = []
-        for documento in range(len(lista)):
-            for palabra in lista[documento]:
-                palabras = palabra.replace("\n", "").split(' ')
-                # Esto es por si queremos ordenar las palabras
-                palabras = sorted(palabras)
-                lista_palabras.append([i.lower() for i in palabras])
+        for palabra in lista:
+            palabras = palabra.replace("\n", "").split(' ')
+            # Esto es por si queremos ordenar las palabras
+            palabras = sorted(palabras)
+            lista_palabras.append([i.lower() for i in palabras])
         # El siguiente bucle va a quitar las palabrasNoClave
         for peque_lista in lista_palabras:
             palabras_limpias = []
@@ -131,17 +121,16 @@ class Documentos():
             # print("dividendo{}:".format(i), (math.sqrt(np.dot(lista_w[i], lista_w[i])) *
             #                                  math.sqrt(np.dot(v, v))))
             res.append(np.dot(lista_w[i], v) /
-                  (math.sqrt(np.dot(lista_w[i], lista_w[i])) *
-                   math.sqrt(np.dot(v, v))))
+                       (math.sqrt(np.dot(lista_w[i], lista_w[i])) *
+                        math.sqrt(np.dot(v, v))))
         return res
 
 
-# doc = Documentos()
-# print("Leemos los documentos\n", doc.leer_documentos())
+doc = Documentos("./Documentos")
 # print("Listamos las palabras que no queremos: \n", doc.leer_palabras_no_claves())
 # print("Listamos las palabras de los documentos:\n", doc.lista_palabras())
 # print("Frecuencia de palabras en los docs:\n", doc.frecuencia())
 # print("Frecuencia docs:\n", doc.frecuencia_documental())
 # print("Frecuencia docs inversa:\n", doc.frecuencia_documental_inversa())
-# print("Peso:\n", doc.peso())
+print("Peso:\n", doc.peso())
 # print("Proximidad:", doc.proximidad([0.1761, 0, 0, 0, 0, 0, 0, 0.1761, 0.4771]))
