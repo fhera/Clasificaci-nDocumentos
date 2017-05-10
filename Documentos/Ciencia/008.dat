@@ -1,0 +1,47 @@
+De Pitágoras a la conjetura del millón de dólares
+
+Cuenta la leyenda que Pitágoras de Samos, conocido filósofo y matemático griego nacido hace más de 25 siglos, fue quien demostró su famoso teorema, expresado simbólicamente mediante esta igualdad:
+
+Donde «A» y «B» representan los catetos y «C» la hipotenusa de un triángulo rectángulo.
+
+Esta fórmula proporciona un test infalible para saber si un triángulo es rectángulo.
+
+Otra leyenda cuenta que Pierre de Fermat, afamado jurista francés nacido hace más de cuatro siglos, demostró el teorema que lleva su nombre, el cual afirma que, si «n» es un número natural mayor que dos, no existen tres números enteros «A», «B», «C» no nulos, que verifiquen la igualdad:
+
+Parece que a Fermat se le ocurrió cambiar el exponente 2 en la fórmula del teorema de Pitágoras por otro entero n > 2 mientras estudiaba una traducción al latín realizada poco tiempo antes por Claude Gaspard Bachet del libro La Aritmética, escrito por Diofanto de Alejandría en el siglo III d.C.
+
+El susodicho teorema de Fermat tuvo que limitarse, por derecho propio, a ser una simple conjetura ya que gran cantidad de matemáticos y aficionados (conocidos como «fermatistas») buscaron infructuosamente una demostración precisa y completa durante más de 350 años. El mismo Fermat nos legó la prueba para el caso n = 4 (siglo XVII), Leonhard Euler para el caso n = 3 (siglo XVIII) y Sophie Germain descubrió una propiedad que demostraba el teorema para infinitos casos (siglo XIX), pero infinitos casos no son todos los casos. En matemáticas, la excepción no confirma la regla sino que la descarta. Ni siquiera en todo este tiempo se pudo encontrar un ejemplo donde la igualdad fuera cierta y concluir que la conjetura era falsa.
+
+Pedro Alegría es profesor en la Universidad del País Vasco (UPV) - RSME
+
+Casi nadie cree ahora la última parte de la famosa afirmación de Fermat:
+
+Es imposible encontrar la forma de convertir un cubo en la suma de dos cubos, una potencia cuarta en la suma de dos potencias cuartas, o en general cualquier potencia más alta que el cuadrado en la suma de dos potencias de la misma clase. Para este hecho he encontrado una maravillosa demostración, pero el margen es demasiado pequeño para que la demostración quepa en él.
+
+Lo que ya no es una leyenda es el acontecimiento histórico que se produjo el 23 de junio de 1993: el matemático británico Andrew Wiles dictó una conferencia en el Isaac Newton Institute de Cambridge donde daba por resuelta la conjetura al demostrar el enunciado de Fermat. Aunque tuvo que corregir algunos errores en la prueba, al año siguiente se aceptó por parte de la comunidad matemática que el teorema estaba por fin demostrado. En ese momento nadie había ofrecido una gratificación económica a quien resolviera el problema pero en 2016 se concedió a sir Andrew Wiles el premio Abel de matemáticas, galardón que está dotado con más de 700.000 euros.
+
+Andrew J. Wiles - Charles Rex Arbogast / AP
+
+Una de las características de las matemáticas es que todo problema resuelto conduce inevitablemente a otros problemas relacionados. En lo que concierne a nuestra historia, un enunciado equivalente al teorema de Fermat es que la igualdad:
+
+Es imposible para valores «A», «B» y «C» que sean coprimos, es decir que no son divisibles por un mismo número (salvo el uno, ¡claro!).
+
+Este enfoque inspiró a un tocayo de Wiles, Andrew Beal, banquero texano (actualmente ocupa el lugar 127 en la lista Forbes de los más ricos del planeta) que estudió algunos cursos de matemáticas en la Universidad del estado de Michigan, a plantear en 1993 una conjetura más general. Dice así:
+
+Sean A, B, C, x, y, z números enteros positivos, con x, y, z > 2 (no necesariamente iguales). Si
+
+Entonces A, B y C deben tener un factor común que es un número primo.
+
+Como muestra, veamos un ejemplo: si la calculadora lo permite, se puede comprobar que:
+
+Y los tres números 624, 14352 y 312 son múltiplos de 2.
+
+El millón de dólares
+
+Después de mucho tiempo dedicado sin éxito a encontrar algún ejemplo que negara su conjetura, Andrew Beal ofreció en 1997 un premio de 5.000 dólares a quien demostrara si era cierta o falsa, incrementándose la cantidad desde entonces hasta llegar al millón de dólares que ofrece en la actualidad. Su interés, según afirma, es animar a los jóvenes a interesarse por las matemáticas y la ciencia (se puede encontrar más información sobre la gestación y evolución del problema en la página «Bealconjecture.com».
+
+La Sociedad Americana de Matemáticas, en Providence, Rhode Island (EE.UU.), ha confirmado que el premio irá a parar a quien sea capaz de demostrar o refutar la conjetura. Además, la solución deberá aparecer publicada en una revista matemática acreditada, valorada por expertos independientes. La misma Sociedad Americana de Matemáticas asegura que la solución es más difícil que la del teorema de Fermat, lo que no debe impedir que espíritus animosos se atrevan a intentarlo. De hecho, se pueden encontrar en internet algunas pruebas realizadas por aficionados que no han conseguido el grado de rigor y precisión exigidos en un problema matemático.
+
+Por muy difícil que resulte llegar a una respuesta satisfactoria del problema, no sería el último escollo en esta historia:todavía espera sin resolver la conjetura ABC, más general que la de Beal pero cuya formulación no es tan elemental como las de los problemas aquí expuestos. Por cierto, esta última conjetura, a pesar de su nombre, no tiene ninguna relación con la publicación que acoge esta sección.
+
+El ABCDARIO DE LAS MATEMÁTICAS es una sección que surge de la colaboración con la Comisión de Divulgación de la Real Sociedad Matemática Española (RSME)

@@ -5,22 +5,25 @@ import math
 import os
 
 
-class Documentos():
-    documentos = ()
+class Docs():
+    docs = dict([])
     num_docs = 0
-
+    root = "Documentos"
     # Constructor que coge los documentos de la ruta indicada en scandir
     # y guarda los nombres en una lista de documentos.
-    def __init__(self, root):
+    def __init__(self, root=root):
         docs = []
-        tipos = []
+        categoria = []
         for r, dirs, files in os.walk(root):
             for file in files:
                 with open(os.path.join(r, file), "r") as f:
                     docs.append(f.read())
-                tipos.append(r.replace(root, ''))
-        self.documentos = dict([('docs', docs), ('tipos', tipos)])
-        self.num_docs = len(self.documentos) + 1
+                categoria.append(r.replace(root, ''))
+        self.docs = dict([('docs', docs), ('categoria', categoria)])
+        self.num_docs = len(self.docs) + 1
+
+    def leer_documentos(self):
+        return self.docs
 
     # Lee del archivo de palabras que no son claves, las palabras.
     def leer_palabras_no_claves(self):
@@ -37,7 +40,7 @@ class Documentos():
     # Transforma el texto de cada documento en una lista de palabras
     # TODO: quitar las palabras que no sean claves en el documento
     def lista_palabras(self):
-        lista = self.documentos['docs']
+        lista = self.docs['docs']
         palabras_no_claves = self.leer_palabras_no_claves()
         lista_palabras = []
         lista_palabras_def = []
@@ -124,13 +127,3 @@ class Documentos():
                        (math.sqrt(np.dot(lista_w[i], lista_w[i])) *
                         math.sqrt(np.dot(v, v))))
         return res
-
-
-# doc = Documentos("./Documentos")
-# print("Listamos las palabras que no queremos: \n", doc.leer_palabras_no_claves())
-# print("Listamos las palabras de los documentos:\n", doc.lista_palabras())
-# print("Frecuencia de palabras en los docs:\n", doc.frecuencia())
-# print("Frecuencia docs:\n", doc.frecuencia_documental())
-# print("Frecuencia docs inversa:\n", doc.frecuencia_documental_inversa())
-# print("Peso:\n", doc.peso())
-# print("Proximidad:", doc.proximidad([0.1761, 0, 0, 0, 0, 0, 0, 0.1761, 0.4771]))

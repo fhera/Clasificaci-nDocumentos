@@ -1,0 +1,39 @@
+¿Por qué WhatsApp se cayó en todo el mundo? ¿Por qué volverá a ocurrir?
+
+¿Por qué WhatsApp se cayó en todo el mundo? ¿Por qué volverá a ocurrir?
+
+¿Por qué WhatsApp se cayó en todo el mundo? ¿Por qué volverá a ocurrir?
+
+La noche del miércoles la aplicación de mensajería sufrió un fallo a nivel mundial que dejó a varios millones de usuarios sin servicio durante unas horas.
+
+WhatsApp se ha convertido en un app básica en nuestros móviles. Pero algo paso el miércoles, cuando millones de personas tuvieron que posponer el envío de mensajes, imágenes, vídeos y videollamadas por unas horas. WhatsApp se había caído por segunda vez en dos días.
+
+En un principio, WhatsApp no hizo ningún comentario sobre cuál es el motivo que causó el resultado, ni lo extendido que estaba. Pero en un segundo comunicado de la compañía, después de restablecer el servicio, aseguró: “durante el día de hoy, los usuarios de WhatsApp en todas partes del mundo no pudieron acceder a WhatsApp por unas horas” y añadió “ya hemos localizado el problema y pedimos disculpas por las molestias.”
+
+La empresa anunció el retorno del servicio sin dar muchas explicaciones, pero deja atrás la pregunta de por qué fallan tanto sus servidores y qué puede hacer Facebook para solucionarlo.
+
+¿Por qué WhatsApp se cayó en todo el mundo? ¿Por qué volverá a ocurrir?
+
+Hay dos teorías válidas.
+
+La primera suposición es que WhatsApp tiene 1.200 millones de usuarios activos por todo el planeta y gestionar tanto tráfico en tiempo real no es una tarea sencilla, ni siquiera para Facebook. Es casi imposible gestionar las comunicaciones de miles de millones de personas porque hay cuellos de botella. Un fallo en su red pudo provocar el problema. Unos segundos sin rede pueden colapsar cualquier servicio.
+
+La segunda teoría es un fallo de la app dentro de su código.
+
+Dave Anderson, experto en experiencia digital de Dynatrace, aseguró a la BBC que creía probable que una actualización de la aplicación fuera el causante del problema: “WhatsApp envía una nueva versión de la aplicación cada pocos días y es probable que el estar creando código nuevo cada poco tiempo suponga que a veces no esté listo para su lanzamiento”, y añade, “cada desarrollo viene con un riesgo. Sólo se necesita una línea de código errónea y la aplicación puede fallar”.
+
+Nos consta que WhatsApp está cambiando su arquitectura y haciendo una migración a nuevos servidores con un sistema más distribuido. De hecho al día siguiente nos llego en Android una nueva actualización.
+
+¿Volverá a suceder?
+
+Con casi total posibilidad volverá a suceder.
+
+Ni su programa beta que permite testear su app antes de hacerla publica a sus millones de usuarios. Ni el TDD o Test-Driven Development (desarrollo dirigido por tests) es una práctica de programación que consiste en escribir primero las pruebas (generalmente unitarias), después escribir el código fuente que pase la prueba satisfactoriamente y, por último, refactorizar el código escrito que usan en su app evitará cometer algún fallo.
+
+Además los famosos picos, muchas veces difíciles de prever, que han hecho que el servicio haya fallado en otras ocasiones, como paso en la Nochevieja de 2015.
+
+Si se interrumpe el servicio de Whatsapp, al intentar reconectarlo al cabo de un minuto ya no hay 100 millones de mensajes en cola sino 200 millones, por lo que el problema de levantar el servicio es cada vez mayor.
+
+WhatsApp resistió los 63.000 millones de mensajes enviados en la Nochevieja del 2016 su mayor logro, pero tampoco puedes sobredimensionar la infraestructura, ya que todo tiene un coste y de momento es un servicio gratuito que ofrece Facebook.
+
+Por lo tanto dentro de unos días, semanas o meses, no sabemos cuando; pero Whatsapp volverá a caer.

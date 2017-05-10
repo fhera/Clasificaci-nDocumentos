@@ -1,0 +1,55 @@
+Ignacio Cirac: «Estamos a las puertas de la segunda revolución cuántica»
+
+Héctor Socas Navarro es investigador en el Instituto de Astrofísica de Canarias (IAC) y director del programa «Coffe Break: Señal y Ruido»
+
+«Estamos a las puertas de una segunda revolución cuántica». Esta aseveración la hace nada menos que Juan Ignacio Cirac, considerado internacionalmente como uno de los padres de la computación cuántica, una tecnología que podría cambiar nuestra forma de vida en un futuro cercano. Para muchos, se trata del español con más posibilidades de lograr el Premio Nobel de Física. Entre otros muchos reconocimientos internacionales, recibió el Premio Príncipe de Asturias en 2006. Haciendo el paralelismo con otros galardonados en categorías más populares, estaríamos hablando del equivalente en deportes a un Rafa Nadal, los hermanos Gasol o la selección de fútbol; en artes a Bob Dylan, Pedro Almodóvar o Paco de Lucía.
+
+Lo bueno de pertenecer a la categoría de investigación científica es que se puede pasear tranquilamente por las calles de La Laguna sin que se te arremoline alrededor un ejambre de fans enfervorizados a la caza de un autógrafo o un selfie. Es más, podría llevar colgando un cartel con su nombre y nadie sabría de quién se trata. Así da gusto. Podemos sentarnos a tomar un café y charlar sobre Física Cuántica en cualquiera de las muchas terrazas en la zona peatonal de la ciudad sin que nadie nos moleste.
+
+El profesor Cirac ha estado estos días de visita en nuestro país pero su residencia habitual está en Alemania, donde desarrolla su labor científica. Es director de la División Teórica del Instituto Max Planck de Óptica Cuántica. Durante la semana pasada estuvo visitando el Instituto de Astrofísica de Canarias, donde impartió una conferencia sobre tecnología cuántica y tuvo ocasión de interactuar con los investigadores de este centro, así como conocer los observatorios astrofísicos de Canarias. Allí se llevan a cabo proyectos en los que colabora su instituto, como el peine de frecuencias láser o el experimento de teletransportación cuántica entre las islas de Tenerife y La Palma.
+
+Experimento de teletransportación cuántica en Canarias - IQOQI Vienna, Austrian Academy of Sciences
+
+Segunda revolución cuántica
+
+En su conferencia en el IAC, Cirac habló sobre la segunda revolución cuántica que se avecina en las próximas décadas. La primera tuvo lugar con la aparición de los semiconductores y el láser para producir tecnologías electrónicas y de telecomunicaciones como los microprocesadores o la fibra óptica. No se podría concebir la sociedad actual sin ordenadores, móviles o internet de banda ancha.
+
+«Hoy en día estamos en condiciones de empezar a explotar efectos cuánticos aún más sorprendentes»
+
+Ordenadores cuánticos
+
+«Hoy en día estamos en condiciones de empezar a explotar efectos cuánticos aún más sorprendentes, como la. Laes la aplicación más obvia de estos efectos. Pero, si nos basamos en la historia, es de esperar que las aplicaciones más revolucionarias sean algunas que ahora mismo no podemos ni imaginar», explica.
+
+Los ordenadores cuánticos aprovechan la superposición de estados y el entrelazamiento cuántico. Su memoria está compuesta de bits cuánticos, o qubits, que tienen la fascinante propiedad de estar en una superposición del estado 0 y 1 simultáneamente, como el famoso gato de Schrödinger, que está a la vez vivo y muerto hasta que alguien lo observa (recordemos que esto es una metáfora ilustrativa, ya que los gatos no son sistemas cuánticos).
+
+Con 2 qubits tendremos 4 estados coexistiendo, con 3 qubits serán 8 los estados… y así sucesivamente. Es decir, el número de estados aumenta exponencialmente con el número de qubits. Las puertas lógicas del ordenador cuántico pueden operar sobre todos estos estados, dando lugar a un gran número de combinaciones posibles y operaciones simultáneas.
+
+Ordenador cuántico experimental - Emily Edwards
+
+Después de operar se hacen interferir los diferentes estados de manera que en cada qubit se amplifica la probabilidad de obtener el resultado de la operación que nos interesa. ¿Qué se consigue con todo esto? Pues, para empezar, una potencia de cálculo que escala exponencialmente con el número de qubits.
+
+¿El fin de la privacidad en internet?
+
+Por eso, los ordenadores cuánticos serán capaces de resolver problemas muchísimo más rápido que los superordenadores actuales. Un problema que es muy importante a día de hoy, y al que se ha prestado mucha atención en este contexto, es el de la criptografía. Muchos afirman que el ordenador cuántico acabará con la privacidad en internet.
+
+Nuestra actividad cotidiana en internet (mensajes privados, transacciones bancarias, compras y ventas online) está protegida por un sistema de cifrado extremadamente ingenioso y práctico. Este sistema se basa en que cada individuo u organización tiene dos claves, una privada y otra pública. Estas claves son dos números primos muy grandes que se emplean para encriptar, desencriptar y firmar la información enviada por la red.
+
+El usuario medio no tiene por qué ser consciente del proceso pero cuando veamos en nuestro navegador que la dirección del sitio web al que accedemos comienza por https (en lugar del habitual http), se ha establecido una conexión cifrada entre nuestra máquina y el servidor al que accedemos. Nuestro navegador y el servidor de destino son capaces de encriptar y desencriptar la información mediante una simple multiplicación por las claves públicas y privadas. Este proceso es rápido y sencillo.
+
+Por el contrario, si alguien quisiera obtener nuestras claves tendría que resolver un problema matemático llamado factorización que es enormemente largo cuando las claves tienen muchos dígitos. Nuestras transacciones cotidianas se cifran con claves de miles de dígitos de longitud. Los superordenadores más potentes que existen tardarían miles de años en obtener una de estas claves. Y aumentando un poco la longitud de las mismas, sería sencillo aumentar este tiempo a millones de años. Sin embargo, los ordenadores cuánticos serán capaces de hacerlo en cuestión de minutos.
+
+«No hay que alarmarse. Ya se han desarrollado otros métodos de cifrado que no sabemos hackear, ni siquiera con ordenadores cuánticos. Eso sí, estos métodos son más costosos o complejos que los actuales. Cuando existan ordenadores cuánticos habrá algunos problemas prácticos que resolver para cambiar toda la infraestructura actual de internet a estos nuevos métodos».
+
+Criptografía cuántica
+
+¿Pero, qué pasará en el futuro? ¿Se desarrollarán nuevas formas de descifrar estos métodos también? Toda nueva tecnología plantea problemas pero también soluciones. «En última instancia la criptografía cuántica es la respuesta definitiva. Las leyes de la Física nos garantizan que las comunicaciones cifradas con este método serán siempre inviolables, independientemente de cuánto avance la tecnología o el conocimiento, porque están basadas en los propios principios de la Física. A día de hoy existen límites prácticos dados por la tecnología actual. Típicamente se puede enviar información en sistemas cuánticos (por ejemplo fotones en cables de fibra óptica) hasta unos 10 o 20 km de distancia. Quizás en el futuro el mundo esté conectado por una red global, una especie de internet cuántica, que aproveche estos avances», dice Cirac.
+
+¿Se puede entender la Física Cuántica?
+
+La Física Cuántica es una disciplina fascinante pero a la vez plantea muchas dificultades conceptuales sobre el significado de la realidad, el hecho de que algo pueda estar aquí y allí a la vez o en varios estados simultáneamente. Entonces, ¿se puede llegar a entender la Física Cuántica?
+
+«Esta es una pregunta que se ha debatido mucho a nivel filosófico. En realidad, depende de la definición de ‘entender’. En general, decimos que entendemos algo cuando encontramos una analogía con conceptos cotidianos. Por ejemplo, si digo que un átomo es una bolita en el núcleo con otra bolita que da vueltas alrededor, me quedo tranquilo y pienso que ya lo entiendo, aunque este modelo sea incorrecto. Desde ese punto de vista, es difícil encontrar analogías adecuadas para la Física Cuántica porque sus leyes chocan frontalmente con nuestra intuición cotidiana».
+
+Y prosigue: «Sin embargo, sí que la entendemos en el sentido de que sus leyes están perfectamente claras y uno es capaz de predecir con total precisión cuál va a ser el resultado de un determinado experimento. Se han propuesto varias interpretaciones de la cuántica. Todas ellas producen el mismo efecto observable y por tanto son indistinguibles desde el punto de vista científico. Los argumentos para preferir una u otra son totalmente subjetivos o filosóficos. Yo no tengo una opinión muy fuerte en este sentido. Me parece que, en ausencia de criterios objetivos, no tiene sentido defender una interpretación frente a otra. Quizás como cuestión de gusto personal tengo una ligera preferencia por la interpretación de variables ocultas no locales».
+
+Entonces, ¿a los expertos no les resulta incómoda la naturaleza que nos revela la Física Cuántica? «Posiblemente el tema más incómodo es el cuestionamiento del realismo, de la existencia de una realidad subyacente independiente del observador y de la medida. Pero quizás no debemos ver la Cuántica como una teoría que describe la naturaleza, sino que se preocupa por cómo la percibimos al interactuar con ella».
