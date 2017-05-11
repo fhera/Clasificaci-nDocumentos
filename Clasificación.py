@@ -20,23 +20,38 @@ from sklearn import neighbors
 
 class Clasificacion():
     docs = []
-    categoria =[]
-    preposiciones =['a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 'en', 'entre', 'hacia', 'hasta',
-                    'para', 'por', 'según', 'sin', 'so', 'sobre', 'tras','durante','mediante','excepto','salvo',
-                    'incluso','más','menos']
-    adverbios = ['no','si','sí']
-    articulos = ['el','la','los','las','un','una','unos','unas','este','esta','estos','estas','aquel','aquella','aquellos','aquellas']
-    verbos_auxiliares = ['he','has','ha','hemos','habéis','han','había','habías','habíamos','habíais','habían']
+    categoria = []
+    preposiciones = ['a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 'en', 'entre', 'hacia', 'hasta',
+                     'para', 'por', 'según', 'sin', 'so', 'sobre', 'tras', 'durante', 'mediante', 'excepto', 'salvo',
+                     'incluso', 'más', 'menos']
+    adverbios = ['no', 'si', 'sí']
+    articulos = ['el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'este', 'esta', 'estos', 'estas', 'aquel',
+                 'aquella', 'aquellos', 'aquellas']
+    verbos_auxiliares = ['he', 'has', 'ha', 'hemos', 'habéis', 'han', 'había', 'habías', 'habíamos', 'habíais',
+                         'habían']
+    documento = Docs()
 
-    def __init__(self, documento=Docs.leer_documentos()):
+    def __init__(self, documento=documento.leer_documentos()):
         self.docs = documento['docs']
         self.categoria = documento['categoria']
 
     def knn(self):
-        tfid = TfidfVectorizer(stop_words=self.preposiciones+ self.adverbios +self.articulos +self.verbos_auxiliares )
-        X_train = tfid.fit_transform(self.docs)
-        Y_train = tfid.fit_transform(self.categoria)
+        tfid = TfidfVectorizer(stop_words=self.preposiciones + self.adverbios + self.articulos + self.verbos_auxiliares)
+        documentos_codificado = tfid.fit_transform(self.docs)
+        categorias_codificado = tfid.fit_transform(self.categoria)
+        # clf = KNeighborsClassifier(n_neighbors=10)
 
+        docs_entrenamiento, docs_prueba = model_selection.train_test_split(
+            documentos_codificado, test_size=.33, random_state=12345)
+
+        cat_entrenamiento, cat_prueba = model_selection.train_test_split(
+            categorias_codificado, test_size=.33, random_state=123454)
+        clasif_kNN = neighbors.KNeighborsClassifier(n_neighbors=5)
+        clasif_kNN.fit(docs_entrenamiento, cat_entrenamiento)
+
+        return clasif_kNN.score(docs_prueba, cat_prueba)
+
+        # return clf.fit(documentos_codificado, categorias_codificado)
 
 
     def __str__(self):
@@ -44,3 +59,4 @@ class Clasificacion():
 
 
 c = Clasificacion()
+print(c.knn())
