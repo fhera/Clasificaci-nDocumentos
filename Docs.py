@@ -3,74 +3,73 @@ from collections import Counter
 import numpy as np
 import math
 import os
+import re  # Expresiones regulares
 
 
 class Docs():
-    docs = dict([])
+    docs = {}
+    categorias = []
     num_docs = 0
     root = "Documentos"
+    palabras_comunes = ['a','ante','bajo','cabe','con','contra','de','desde','en','entre','hacia','hasta','para','por',
+                        'según','sin','so','sobre','tras','durante','mediante','excepto','salvo','incluso','más','menos',
+                        'no','si','sí','el','la','los','las','un','una','unos','unas','este','esta','estos','estas',
+                        'aquel','aquella','aquellos','aquellas','he','has','ha','hemos','habéis','han','había','habías',
+                        'habíamos','habíais','habían','además','ahora','alguna','al','algún','alguno','algunos','algunas',
+                        'mi','mis','misma','mismo','muchas','muchos','y','algo','antes','del','ellas','eso','muy','que',
+                        'su','sus','ya','él','éste','ésta','ahí','allí','como','cuando','era','es','le','me','lo','pero',
+                        'qué','también','te','yo','tu','el''nosotros','vosotros','después','se','siempre']
+
     # Constructor que coge los documentos de la ruta indicada en scandir
     # y guarda los nombres en una lista de documentos.
     def __init__(self, root=root):
-        docs = []
-        categoria = []
+        documentos = []
+        res = {}
+        # r= devuelve el directorio, dirs = categoria,
+        # files= el contenido del directorio
         for r, dirs, files in os.walk(root):
             for file in files:
                 with open(os.path.join(r, file), "r") as f:
-                    docs.append(f.read())
-                categoria.append(r.replace(root, ''))
-        self.docs = dict([('docs', docs), ('categoria', categoria)])
+                    documentos.append(f.read())
+                    f.close()
+
+            res[''] = documentos
+        self.docs = res
+        self.categorias = list(res.keys())
         self.num_docs = len(self.docs) + 1
 
-    def leer_documentos(self):
-        return self.docs
-
-    # Lee del archivo de palabras que no son claves, las palabras.
-    def leer_palabras_no_claves(self):
-        palabras_no_claves = []
-        fichero = open("PalabrasNoClaves/palabras.txt", "r")
-        text = fichero.readlines()
-        fichero.close()
-        for palabra in text:
-            palabras = palabra.replace("\n", "").split(' ')
-            palabras_no_claves.extend(palabras)
-
-        return palabras_no_claves
-
     # Transforma el texto de cada documento en una lista de palabras
-    # TODO: quitar las palabras que no sean claves en el documento
     def lista_palabras(self):
-        lista = self.docs['docs']
-        palabras_no_claves = self.leer_palabras_no_claves()
+        documentos_por_categoria = self.docs
+        res = {}
         lista_palabras = []
-        lista_palabras_def = []
-        for palabra in lista:
-            palabras = palabra.replace("\n", "").split(' ')
-            # Esto es por si queremos ordenar las palabras
-            palabras = sorted(palabras)
-            lista_palabras.append([i.lower() for i in palabras])
-        # El siguiente bucle va a quitar las palabrasNoClave
-        for peque_lista in lista_palabras:
-            palabras_limpias = []
-            for i in peque_lista:
-                if i not in palabras_no_claves:
-                    palabras_limpias.append(i)
-            lista_palabras_def.append(palabras_limpias)
-        return lista_palabras_def
+        for categoria in self.categorias:
+            for documento in documentos_por_categoria[categoria]:
+                # palabras = documento.replace("\n", "").split(' ')
+                palabras = re.findall(r"[\w]+", documento)
+                # Esto es por si queremos ordenar las palabras
+                palabras = sorted([i.lower() for i in palabras])
+                lista_palabras.append([i for i in palabras if i not in self.palabras_comunes])
+            res[categoria] = lista_palabras
+        return res
 
     # Frecuencia con la que aparece una palabra en cada documento
     def frecuencia(self):
         docs = self.lista_palabras()
-        frec = []
-        # En res guardamos todas las palabras que aparecen en todos los docs
-        res = [palabra for palabras in docs for palabra in palabras]
-        c = Counter()
-        for palabras in docs:
-            for palabra in res:
-                c[palabra] = 0
-            c.update(palabras)
-            frec.append(sorted(list(c.items())))  # Sorted ordena por orden natural
+        frec = {}
+        # En palabras_por_categoria guardamos todas las palabras que aparecen en todos los docs
+        for categoria in self.categorias:
+            for documentos in docs[categoria]:
+                c = Counter(documentos)
+            frec[categoria] = list(c.items())
         return frec
+
+    # 4.4 definir el vocabulario, unas 20 palabras clave por cada categoría
+    def vocabulario(self):
+        for categoria in self.docs['categoria']:
+            palabras_frecuentes = self.frecuencia()
+
+        print(palabras_frecuentes)
 
     # Nº de veces que aparece una palabra en documentos distintos
     def frecuencia_documental(self):
