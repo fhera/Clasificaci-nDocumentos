@@ -11,29 +11,41 @@ class Docs():
     categorias = []
     num_docs = 0
     root = "Documentos"
-    palabras_comunes = ['a','ante','bajo','cabe','con','contra','de','desde','en','entre','hacia','hasta','para','por',
-                        'según','sin','so','sobre','tras','durante','mediante','excepto','salvo','incluso','más','menos',
-                        'no','si','sí','el','la','los','las','un','una','unos','unas','este','esta','estos','estas',
-                        'aquel','aquella','aquellos','aquellas','he','has','ha','hemos','habéis','han','había','habías',
-                        'habíamos','habíais','habían','además','ahora','alguna','al','algún','alguno','algunos','algunas',
-                        'mi','mis','misma','mismo','muchas','muchos','y','algo','antes','del','ellas','eso','muy','que',
-                        'su','sus','ya','él','éste','ésta','ahí','allí','como','cuando','era','es','le','me','lo','pero',
-                        'qué','también','te','yo','tu','el''nosotros','vosotros','después','se','siempre']
+    palabras_comunes = ['a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 'en', 'entre', 'hacia', 'hasta',
+                        'para', 'por',
+                        'según', 'sin', 'so', 'sobre', 'tras', 'durante', 'mediante', 'excepto', 'salvo', 'incluso',
+                        'más', 'menos',
+                        'no', 'si', 'sí', 'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'este', 'esta',
+                        'estos', 'estas',
+                        'aquel', 'aquella', 'aquellos', 'aquellas', 'he', 'has', 'ha', 'hemos', 'habéis', 'han',
+                        'había', 'habías',
+                        'habíamos', 'habíais', 'habían', 'además', 'ahora', 'alguna', 'al', 'algún', 'alguno',
+                        'algunos', 'algunas',
+                        'mi', 'mis', 'misma', 'mismo', 'muchas', 'muchos', 'y', 'algo', 'antes', 'del', 'ellas', 'eso',
+                        'muy', 'que',
+                        'su', 'sus', 'ya', 'él', 'éste', 'ésta', 'ahí', 'allí', 'como', 'cuando', 'era', 'es', 'le',
+                        'me', 'lo', 'pero',
+                        'qué', 'también', 'te', 'yo', 'tu', 'el''nosotros', 'vosotros', 'después', 'se', 'siempre']
 
     # Constructor que coge los documentos de la ruta indicada en scandir
     # y guarda los nombres en una lista de documentos.
     def __init__(self, root=root):
-        documentos = []
         res = {}
         # r= devuelve el directorio, dirs = categoria,
         # files= el contenido del directorio
         for r, dirs, files in os.walk(root):
+            documentos = []
             for file in files:
                 with open(os.path.join(r, file), "r") as f:
                     documentos.append(f.read())
                     f.close()
-
-            res[''] = documentos
+            categoria = r.replace(root + os.sep, '')
+            # Quitamos la primera iteración porque la primera vez realiza un recorrido
+            # por el directorio, por lo que no se carga ningún directorio. dirs se carga
+            # en la lista de subdirectorios en la primera iteración, pero en las siguientes
+            # ya se encuentra cargada en r.
+            if len(dirs)==0:
+                res[categoria] = documentos
         self.docs = res
         self.categorias = list(res.keys())
         self.num_docs = len(self.docs) + 1
@@ -42,10 +54,12 @@ class Docs():
     def lista_palabras(self):
         documentos_por_categoria = self.docs
         res = {}
-        lista_palabras = []
         for categoria in self.categorias:
+            lista_palabras = []
             for documento in documentos_por_categoria[categoria]:
-                # palabras = documento.replace("\n", "").split(' ')
+                # Con re podemos meter patrones, pero tiene ya patrones
+                # predefinidos, con \w coge todas las palabras y quita los
+                # símbolos
                 palabras = re.findall(r"[\w]+", documento)
                 # Esto es por si queremos ordenar las palabras
                 palabras = sorted([i.lower() for i in palabras])
@@ -60,8 +74,9 @@ class Docs():
         # En palabras_por_categoria guardamos todas las palabras que aparecen en todos los docs
         for categoria in self.categorias:
             for documentos in docs[categoria]:
-                c = Counter(documentos)
-            frec[categoria] = list(c.items())
+                for documento in documentos:
+                    c = Counter(documentos)
+                frec[categoria] = list(c.items())
         return frec
 
     # 4.4 definir el vocabulario, unas 20 palabras clave por cada categoría

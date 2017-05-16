@@ -1,4 +1,5 @@
 import Genera_documentos
+from io import open
 import Docs
 import pandas
 import re
@@ -32,3 +33,9 @@ print("Frecuencia de palabras en los docs:\n", doc.frecuencia())
 # articulo.download()
 # articulo.parse()
 # print(articulo.text)
+
+### Metemos las frecuencias de palabras en un archivo ########
+frec=doc.lista_palabras()
+file = open('palabras.txt', 'w', encoding='utf8')
+file.write(str(frec))
+file.close()
