@@ -25,7 +25,7 @@ class Docs():
                         'muy', 'que',
                         'su', 'sus', 'ya', 'él', 'éste', 'ésta', 'ahí', 'allí', 'como', 'cuando', 'era', 'es', 'le',
                         'me', 'lo', 'pero',
-                        'qué', 'también', 'te', 'yo', 'tu', 'el''nosotros', 'vosotros', 'después', 'se', 'siempre']
+                        'qué', 'también', 'te', 'yo', 'tu', 'el','nosotros', 'vosotros', 'después', 'se', 'siempre']
 
     # Constructor que coge los documentos de la ruta indicada en scandir
     # y guarda los nombres en una lista de documentos.
