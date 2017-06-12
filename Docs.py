@@ -13,20 +13,15 @@ class Docs():
     num_docs = 0
     root = "Documentos"
     palabras_comunes = ['a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 'en', 'entre', 'hacia', 'hasta',
-                        'para', 'por',
-                        'según', 'sin', 'so', 'sobre', 'tras', 'durante', 'mediante', 'excepto', 'salvo', 'incluso',
-                        'más', 'menos',
-                        'no', 'si', 'sí', 'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'este', 'esta',
-                        'estos', 'estas',
-                        'aquel', 'aquella', 'aquellos', 'aquellas', 'he', 'has', 'ha', 'hemos', 'habéis', 'han',
-                        'había', 'habías',
-                        'habíamos', 'habíais', 'habían', 'además', 'ahora', 'alguna', 'al', 'algún', 'alguno',
-                        'algunos', 'algunas',
-                        'mi', 'mis', 'misma', 'mismo', 'muchas', 'muchos', 'y', 'algo', 'antes', 'del', 'ellas', 'eso',
-                        'muy', 'que',
+                        'para', 'por', 'según', 'sin', 'so', 'sobre', 'tras', 'durante', 'mediante', 'excepto', 'salvo',
+                        'incluso', 'más', 'menos', 'no', 'si', 'sí', 'el', 'la', 'los', 'las', 'un', 'una', 'unos',
+                        'unas', 'este', 'esta', 'estos', 'estas', 'aquel', 'aquella', 'aquellos', 'aquellas', 'he',
+                        'has', 'ha', 'hemos', 'habéis', 'han', 'había', 'habías', 'habíamos', 'habíais', 'habían',
+                        'además', 'ahora', 'alguna', 'al', 'algún', 'alguno', 'algunos', 'algunas', 'mi', 'mis',
+                        'misma', 'mismo', 'muchas', 'muchos', 'y', 'algo', 'antes', 'del', 'ellas', 'eso', 'muy', 'que',
                         'su', 'sus', 'ya', 'él', 'éste', 'ésta', 'ahí', 'allí', 'como', 'cuando', 'era', 'es', 'le',
-                        'me', 'lo', 'pero',
-                        'qué', 'también', 'te', 'yo', 'tu', 'el','nosotros', 'vosotros', 'después', 'se', 'siempre']
+                        'me', 'lo', 'pero', 'qué', 'también', 'te', 'yo', 'tu', 'el', 'nosotros', 'vosotros', 'después',
+                        'se', 'siempre']
 
     # Constructor que coge los documentos de la ruta indicada en scandir
     # y guarda los nombres en una lista de documentos.
@@ -45,7 +40,7 @@ class Docs():
             # por el directorio, por lo que no se carga ningún directorio. dirs se carga
             # en la lista de subdirectorios en la primera iteración, pero en las siguientes
             # ya se encuentra cargada en r.
-            if len(dirs)==0:
+            if len(dirs) == 0:
                 res[categoria] = documentos
         self.docs = res
         self.categorias = list(res.keys())
@@ -72,21 +67,25 @@ class Docs():
     # Frecuencia con la que aparece una palabra en cada documento
     def frecuencia(self):
         docs = self.lista_palabras()
-        frec = {}
+        res = OrderedDict()
         # En palabras_por_categoria guardamos todas las palabras que aparecen en todos los docs
         for categoria in self.categorias:
+            lista_docs = []
             for documentos in docs[categoria]:
-                c = Counter(documentos)
-            frec[categoria] = list(c.items())
-        res = OrderedDict(sorted(frec.items(), key=lambda x:x[1]))
-        return OrderedDict(sorted(frec.items(), key=lambda x:x[1]))
+                c = Counter(documentos).items()
+                lista_docs.append( sorted(c, key= lambda palabra: palabra[1], reverse=True))
+            res[categoria] = lista_docs
+        return res
 
-    # 4.4 definir el vocabulario, unas 20 palabras clave por cada categoría
+    # 4.4 Definir el vocabulario, unas 20 palabras clave por cada categoría
     def vocabulario(self):
-        for categoria in self.docs['categoria']:
-            palabras_frecuentes = self.frecuencia()
+        frec = self.frecuencia()
+        res = OrderedDict()
 
-        print(palabras_frecuentes)
+        for categoria in frec:
+            c = (counter for counter in frec.get(categoria))
+
+        return res
 
     # Nº de veces que aparece una palabra en documentos distintos
     def frecuencia_documental(self):
