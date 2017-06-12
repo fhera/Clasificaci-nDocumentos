@@ -1,5 +1,6 @@
 from io import open
 from collections import Counter
+from collections import OrderedDict
 import numpy as np
 import math
 import os
@@ -62,7 +63,8 @@ class Docs():
                 # símbolos
                 palabras = re.findall(r"[\w]+", documento)
                 # Esto es por si queremos ordenar las palabras
-                palabras = sorted([i.lower() for i in palabras])
+                # palabras = sorted([i.lower() for i in palabras])
+                palabras = [i.lower() for i in palabras]
                 lista_palabras.append([i for i in palabras if i not in self.palabras_comunes])
             res[categoria] = lista_palabras
         return res
@@ -74,10 +76,10 @@ class Docs():
         # En palabras_por_categoria guardamos todas las palabras que aparecen en todos los docs
         for categoria in self.categorias:
             for documentos in docs[categoria]:
-                for documento in documentos:
-                    c = Counter(documentos)
-                frec[categoria] = list(c.items())
-        return frec
+                c = Counter(documentos)
+            frec[categoria] = list(c.items())
+        res = OrderedDict(sorted(frec.items(), key=lambda x:x[1]))
+        return OrderedDict(sorted(frec.items(), key=lambda x:x[1]))
 
     # 4.4 definir el vocabulario, unas 20 palabras clave por cada categoría
     def vocabulario(self):

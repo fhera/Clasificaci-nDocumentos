@@ -35,7 +35,7 @@ print("Frecuencia de palabras en los docs:\n", doc.frecuencia())
 # print(articulo.text)
 
 ### Metemos las frecuencias de palabras en un archivo ########
-frec=doc.lista_palabras()
-file = open('palabras.txt', 'w', encoding='utf8')
-file.write(str(frec))
-file.close()
+# frec=doc.frecuencia()
+# file = open('frecuencia.txt', 'w', encoding='utf8')
+# file.write(str(frec))
+# file.close()
