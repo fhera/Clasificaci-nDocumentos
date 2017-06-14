@@ -47,7 +47,7 @@ datos_entrenamiento_nb = ohe.fit_transform(datos_entrenamiento)
 
 clasif_NB.fit(datos_entrenamiento_nb, clase_entrenamiento)
 
-nuevo_ejemplo = ['2','none','none','none','1','1']          #El fallo está en que el 3 nunca ha aparecido en el entrenamiento y no sabe lo que es
+nuevo_ejemplo = ['2','0','0','0','1','1']          #El fallo está en que el 3 nunca ha aparecido en el entrenamiento y no sabe lo que es
 
 # Codificamos los valores de los atributos
 nuevo_ejemplo_codif = [le.transform([valor])
