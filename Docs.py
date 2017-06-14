@@ -12,6 +12,7 @@ class Docs():
     categorias = []
     num_docs = 0
     root = "Documentos"
+    # Las palabras_comunes las empleamos para que el algoritmo sea más eficiente.
     palabras_comunes = ['a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 'en', 'entre', 'hacia', 'hasta',
                         'para', 'por', 'según', 'sin', 'so', 'sobre', 'tras', 'durante', 'mediante', 'excepto', 'salvo',
                         'incluso', 'más', 'menos', 'no', 'si', 'sí', 'el', 'la', 'los', 'las', 'un', 'una', 'unos',
@@ -21,7 +22,7 @@ class Docs():
                         'misma', 'mismo', 'muchas', 'muchos', 'y', 'algo', 'antes', 'del', 'ellas', 'eso', 'muy', 'que',
                         'su', 'sus', 'ya', 'él', 'éste', 'ésta', 'ahí', 'allí', 'como', 'cuando', 'era', 'es', 'le',
                         'me', 'lo', 'pero', 'qué', 'también', 'te', 'yo', 'tu', 'el', 'nosotros', 'vosotros', 'después',
-                        'se', 'siempre']
+                        'se', 'o', 'n', 's']
 
     # Constructor que coge los documentos de la ruta indicada en scandir
     # y guarda los nombres en una lista de documentos.
@@ -68,30 +69,33 @@ class Docs():
     def frecuencia(self):
         docs = self.lista_palabras()
         res = OrderedDict()
-        # En palabras_por_categoria guardamos todas las palabras que aparecen en todos los docs
         for categoria in self.categorias:
             lista_docs = []
             for documentos in docs[categoria]:
                 c = Counter(documentos).items()
-                lista_docs.append( sorted(c, key= lambda palabra: palabra[1], reverse=True))
+                lista_docs.append(sorted(c, key=lambda palabra: palabra[1], reverse=True))
             res[categoria] = lista_docs
         return res
 
     # 4.4 Definir el vocabulario, unas 20 palabras clave por cada categoría
+    #  TODO queda comprobar que hay de 5 a 10 palabras iguales en el listado del vocabulario
     def vocabulario(self):
-        frec = self.frecuencia()
+        docs = self.lista_palabras()
         res = OrderedDict()
-
-        for categoria in frec:
-            c = (counter for counter in frec.get(categoria))
-
+        for categoria in self.categorias:
+            lista_docs = []
+            for documentos in docs[categoria]:
+                for palabras in documentos:
+                    lista_docs.append(palabras)
+            c = Counter(lista_docs).most_common(20)
+            res[categoria] = c
         return res
 
     # Nº de veces que aparece una palabra en documentos distintos
     def frecuencia_documental(self):
         docs = self.lista_palabras()
         frec = {}
-        for i in range(len(docs)):
+        for i in range(0, len(docs)):
             for palabra in docs[i]:
                 # print("Documento {}".format(i), palabra)
                 if palabra in frec.keys() and frec[palabra][0] != i:
