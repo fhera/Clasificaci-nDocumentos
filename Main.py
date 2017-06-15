@@ -4,6 +4,7 @@ import Docs
 import csv
 import pandas
 import re
+from newspaper import Article
 
 ############# Generador de documentación ############
 # 4.3 Obtener un conjunto de textos de entrenamiento (y de test)
@@ -15,7 +16,7 @@ import re
 doc = Docs.Docs()
 
 doc.documentos_csv()
-# print("Listamos las palabras de los documentos:\n", doc.lista_palabras())
+# print("Listamos la¿s palabras de los documentos:\n", doc.lista_palabras())
 # print("Frecuencia de palabras en los docs:\n", doc.frecuencia())
 
 # print(doc.vocabulario())
@@ -33,11 +34,11 @@ doc.documentos_csv()
 
 ####### 4.7 Realización de experimentos  ########
 
-#  url = "http://www.abc.es/internacional/20150508/abci-hitler-aniversario-201505022206.html"
-# articulo = Article(url)
-# articulo.download()
-# articulo.parse()
-# print(articulo.text)
+url = "http://www.abc.es/cultura/arte/abci-prado-y-thyssen-salen-armario-201706150132_noticia.html"
+articulo = Article(url)
+articulo.download()
+articulo.parse()
+# nuevo_ejemplo = articulo.text
 
 ### Metemos las frecuencias de palabras en un archivo ########
 # frec=doc.frecuencia()
@@ -55,3 +56,4 @@ doc.documentos_csv()
 # salida.writerows(datos)
 # del salida
 # csvsalida.close()
+
