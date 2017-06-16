@@ -1,6 +1,0 @@
-a,ante,bajo,cabe,con,contra,de,desde,en,entre,hacia,hasta,para,por,según,sin,so,
-sobre,tras,durante,mediante,excepto,salvo,incluso,más,menos,no,si,sí,el,la,los,
-las,un,una,unos,unas,este,esta,estos,estas,aquel,aquella,aquellos,aquellas,he,has,
-ha,hemos,habéis,han,había,habías,habíamos,habíais,habían,además,ahora,alguna,al
-,algún,alguno,algunos,algunas,mi,mis,misma,mismo,muchas,muchos,y,algo,antes,del,
-ellas,eso,muy,que,su,sus
