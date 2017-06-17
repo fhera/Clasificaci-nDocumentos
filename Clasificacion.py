@@ -5,55 +5,87 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import preprocessing
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn import model_selection
 from sklearn import naive_bayes
 from sklearn import neighbors
+from newspaper import Article
 
-
-# doc = read_all_documents("Documentos")
-# print("Leemos los documentos\n", doc)
-#
-# tfid = TfidfVectorizer()
-# X_train = tfid.fit_transform(doc)
-#
-# clf = KNeighborsClassifier(n_neighbors=3)
-# clf.fit(X_train)
 
 class Clasificacion():
-    docs = []
-    categoria = []
-    documento = Docs()
+    doc = Docs()
+    datos = doc.leer_doc()
+    documentos = datos['docs']
+    categorias = datos['categoria']
 
-    def __init__(self, documento):
-        self.docs = documento
+    docs_codificados = []
+    tfid = []
+    clf = []
 
-    def preprocesamiento(self):
-        tfid = TfidfVectorizer(stop_words=self.palabras_comunes)
-        documentos_codificado = tfid.fit_transform(self.docs)
+    def __init__(self, doc=documentos):
+        print("-----------PREPROCESADO-----------")
+        # Vamos a dividir el conjunto de entrenamiento y el conjunto de test
 
-    def knn(self):
+        print("Un momento que estamos analizando los documentos...")
+        vectorizer = CountVectorizer()
+        vectorizer.fit_transform(self.documentos)
+        print(vectorizer.get_feature_names())
 
-        # clf = KNeighborsClassifier(n_neighbors=10)
+        # Tratamos el vocabulario para añadirlo al vector tfidf
+        vocabulario = self.doc.vocabulario()
+        lista_vocabulario = [palabra for documentos in vocabulario.values() for palabra in documentos]
 
-        docs_entrenamiento, docs_prueba = model_selection.train_test_split(
-            documentos_codificado, test_size=.33, random_state=12345)
-        print(docs_entrenamiento.shape[0])
+        tfid = TfidfVectorizer(stop_words=self.doc.palabras_comunes, vocabulary=lista_vocabulario)
+        self.tfid = tfid
+        documentos_codificado = tfid.fit_transform(self.documentos)
+        self.docs_codificados = documentos_codificado
+        print("Vocabulario:\n", tfid.get_feature_names())
+        # print(documentos_codificado)
 
-        cat_entrenamiento, cat_prueba = model_selection.train_test_split(
-            categorias_codificado, test_size=.33, random_state=123454)
-        clasif_kNN = neighbors.KNeighborsClassifier(n_neighbors=5)
-        clasif_kNN.fit(docs_entrenamiento, cat_entrenamiento)
+        print("-----------ENTRENANDO ALGORITMO KNN-----------")
+        # docs_entrenamiento, docs_prueba = model_selection.train_test_split(
+        #     self.docs_codificados, test_size=.33, random_state=12345,
+        #     stratify=self.categorias)
+        docs_entrenamiento = self.docs_codificados
+        cat_entrenamiento = self.categorias
+        clf = neighbors.KNeighborsClassifier(n_neighbors=15)
 
-        # return clasif_kNN.score(docs_prueba, cat_prueba)
+        clf.fit(docs_entrenamiento, cat_entrenamiento)
 
-        # return clf.fit(documentos_codificado, categorias_codificado)
+        test = self.doc.leer_doc("test")
+        docs_prueba = self.tfid.fit_transform(test['docs'])
+        cat_prueba = test['categoria']
 
-    def __str__(self):
-        return "La clasificación del documento con nombre {} es del tipo {}.".format(self.documento, self.tipo)
+        print('Porcentaje de acierto sobre 1: %0.3f' % clf.score(docs_prueba, cat_prueba))
+        self.clf = clf
+
+    def Predecir(self, url, classifier):
+        articulo = Article(url)
+        articulo.download()
+        articulo.parse()
+        # print(articulo.text)
+        article = articulo.text
+        X_test = self.tfid.transform([article])
+        return classifier.predict(X_test)[0]
+
+    def Mostrar_predicciones(self, urls, classifier):
+        print("-----------PREDICCIONES DE LOS ARTICULOS NUEVOS-----------")
+        for url in urls:
+            print('La predicción de la categoría es: ' + self.Predecir(url, classifier))
 
 
 c = Clasificacion()
-print(c.knn())
+clasificador = c.clf
+
+c.Mostrar_predicciones([
+    'http://www.abc.es/economia/abci-bufetes-intentan-accionistas-bankia-vayan-juicio-201602190746_noticia.html',
+    'http://www.elconfidencial.com/deportes/futbol/2016-02-19/torres-atletico-cope_1154857/',
+    'http://sevilla.abc.es/deportes/alfinaldelapalmera/noticias/fichajes-betis/betis-pide-tres-millones-petros-130734-1497644020.html',
+    'http://sevilla.abc.es/deportes/alfinaldelapalmera/noticias/fichajes-betis/betis-no-mas-ofertas-villamarin-130737-1497644996.html',
+    'http://www.abc.es/cultura/arte/abci-crece-familia-duques-osuna-coleccion-prado-201706170138_noticia.html'
+], clasificador)
+
+
 
 
 # ##### Pruebas con KNN #####
