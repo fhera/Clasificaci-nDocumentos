@@ -106,14 +106,16 @@ class Docs():
                         lista_docs.append(palabras)
             c = Counter(lista_docs).most_common(20)
             res[categoria] = [c[i][0] for i in range(len(c))]
+            # Va añadiendo palabras a la lista de vocabulario para comprobar en el if que no se
+            # repiten
             lista_vocabulario = [palabra for documentos in res.values() for palabra in documentos]
-
         return res
 
+    # Guarda el documento en la carpeta Datos
     def documentos_csv(self):
         frec = self.frecuencia()
         vocabulario = self.vocabulario()
-        documentocsv = 'documentos.csv'
+        documentocsv = 'Datos/documentos.csv'
         csvsalida = open(documentocsv, 'w', newline='')
         lista_palabras = [palabra for documentos in vocabulario.values() for palabra in documentos]
         lista_palabras.append('Categoria')
@@ -140,7 +142,9 @@ class Docs():
 
         print("Documento creado en el fichero {}".format(documentocsv))
 
-    # Nº de veces que aparece una palabra en documentos distintos
+
+        # Nº de veces que aparece una palabra en documentos distintos
+
     def frecuencia_documental(self):
         docs = self.lista_palabras()
         res = OrderedDict()
@@ -176,7 +180,7 @@ class Docs():
         frec = self.frecuencia()
         frec_inversa = self.frecuencia_documental_inversa()
         pesos = []
-        res = OrderedDict()
+        res = []
         n = 0
         for categoria in self.categorias:
             for documentos in frec[categoria]:
@@ -188,28 +192,43 @@ class Docs():
                     else:
                         peso.append((tupla[0], 0))
                 pesos.append(peso)
-            res[categoria] = pesos
+            res = pesos
         return res
 
-    # 2.2 Proximidad entre documentos y consultas
-    # numpy.dot(lista_w[1], v) -> Multiplicación escalar
-    def proximidad(self, v):
+    def pesos_csv(self):
         pesos = self.peso()
-        lista_w = []
-        [lista_w.append([i[1] for i in w]) for w in pesos]
-        res = []
-        for i in range(len(lista_w)):
-            # print("divisor{}:".format(i), np.dot(lista_w[i], v))
-            # print("dividendo{}:".format(i), (math.sqrt(np.dot(lista_w[i], lista_w[i])) *
-            #                                  math.sqrt(np.dot(v, v))))
-            res.append(np.dot(lista_w[i], v) /
-                       (math.sqrt(np.dot(lista_w[i], lista_w[i])) *
-                        math.sqrt(np.dot(v, v))))
-        return res
+        vocabulario = self.vocabulario()
+        documentocsv = 'Datos/pesos.csv'
+        csvsalida = open(documentocsv, 'w', newline='')
+        lista_palabras = [palabra for documentos in vocabulario.values() for palabra in documentos]
+        lista_palabras.append('Categoria')
+        salida = csv.DictWriter(csvsalida, fieldnames=lista_palabras)
+        # Indica que hay cabecera, es obligatorio con DictWriter
+        salida.writeheader()
+        # Rellena el diccionario con todas las palabras, para el header del csv
+        valores = OrderedDict()
+        for palabra in lista_palabras:
+            valores.update({palabra: 0})
+        # Rellenamos con el vector peso en cada fila
+        for categoria in self.categorias:
+            for documentos in pesos:
+                # Resetea a 0 los valores de las claves para cada doc
+                valores = dict.fromkeys(valores, 0)
+                for palabras in documentos:
+                    if palabras[0] in lista_palabras:
+                        valores[palabras[0]] = palabras[1]
+                valores['Categoria'] = categoria
+                salida.writerow(valores)
+        del salida
+        csvsalida.close()
 
-# pruebas = Docs()
+        print("Creado fichero {} que contiene los pesos de los documentos".format(documentocsv))
+
+pruebas = Docs()
 # print(pruebas.vocabulario())
 # print("Frecuencia:\n", pruebas.frecuencia())
 # print("Frec documental:\n", pruebas.frecuencia_documental())
 # print("Frec inversa:\n", pruebas.frecuencia_documental_inversa())
 # print("Peso:\n", pruebas.peso())
+print("Peso a csv:\n", pruebas.pesos_csv())
+# print("Proximidad:\n", pruebas.proximidad(pruebas.peso()))
