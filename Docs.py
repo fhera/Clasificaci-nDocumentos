@@ -12,32 +12,36 @@ class Docs():
     docs = {}
     categorias = []
     num_docs = 0
-    root = "Documentos"
     # Las palabras_comunes las empleamos para que el algoritmo sea más eficiente.
     palabras_comunes = ['a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 'en', 'entre', 'hacia', 'hasta',
                         'para', 'por', 'según', 'sin', 'so', 'sobre', 'tras', 'durante', 'mediante', 'excepto', 'salvo',
                         'incluso', 'más', 'menos', 'no', 'si', 'sí', 'el', 'la', 'los', 'las', 'un', 'una', 'unos',
                         'unas', 'este', 'esta', 'estos', 'estas', 'aquel', 'aquella', 'aquellos', 'aquellas', 'he',
-                        'has', 'ha', 'hemos', 'habéis', 'han', 'había', 'habías', 'habíamos', 'habíais', 'habían',
-                        'además', 'ahora', 'alguna', 'al', 'algún', 'alguno', 'algunos', 'algunas', 'mi', 'mis',
-                        'misma', 'mismo', 'muchas', 'muchos', 'y', 'algo', 'antes', 'del', 'ellas', 'eso', 'muy', 'que',
-                        'su', 'sus', 'ya', 'él', 'éste', 'ésta', 'ahí', 'allí', 'como', 'cuando', 'era', 'es', 'le',
-                        'me', 'lo', 'pero', 'qué', 'también', 'te', 'yo', 'tu', 'el', 'nosotros', 'vosotros', 'después',
-                        'se', 'o', 'n', 's', 'son','dos']
+                        'esa', 'has', 'ha', 'hemos', 'habéis', 'han', 'había', 'habías', 'habíamos', 'habíais', 'cómo',
+                        'habían', 'ese', 'además', 'ahora', 'alguna', 'al', 'algún', 'alguno', 'algunos', 'algunas',
+                        'mi', 'mis', 'misma', 'mismo', 'muchas', 'muchos', 'y', 'algo', 'antes', 'del', 'ellas', 'eso',
+                        'muy', 'que', 'su', 'sus', 'ya', 'él', 'éste', 'ésta', 'ahí', 'allí', 'como', 'cuando', 'era',
+                        'es', 'le', 'me', 'lo', 'pero', 'qué', 'también', 'te', 'yo', 'tu', 'el', 'nosotros',
+                        'vosotros', 'después', 'se', 'o', 'n', 's', 'son', 'dos', 'esto', 'está', 'están', 'nos', 'ni',
+                        'tiene', 'uno', 'hay', 'todos', 'sido', 'usted', 'cada', 'todo', 'fue', 'ser', 'hace', 'mucho',
+                        '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'entonces', 'solo']
 
     # Constructor que coge los documentos de la ruta indicada en scandir
     # y guarda los nombres en una lista de documentos.
-    def __init__(self, root=root):
+    def __init__(self, path="Documentos"):
         res = {}
+        n = 0
         # r= devuelve el directorio, dirs = categoria,
         # files= el contenido del directorio
-        for r, dirs, files in os.walk(root):
+        for r, dirs, files in os.walk(path):
             documentos = []
             for file in files:
+                n += 1
+
                 with open(os.path.join(r, file), "r") as f:
                     documentos.append(f.read())
                     f.close()
-            categoria = r.replace(root + os.sep, '')
+            categoria = r.replace(path + os.sep, '')
             # Quitamos la primera iteración porque la primera vez realiza un recorrido
             # por el directorio, por lo que no se carga ningún directorio. dirs se carga
             # en la lista de subdirectorios en la primera iteración, pero en las siguientes
@@ -46,7 +50,17 @@ class Docs():
                 res[categoria] = documentos
         self.docs = res
         self.categorias = list(res.keys())
-        self.num_docs = len(self.docs) + 1
+        self.num_docs = n
+
+    def leer_doc(self, path="Documentos"):
+        categoria = []
+        docs = []
+        for r, dirs, files in os.walk(path):
+            for file in files:
+                with open(os.path.join(r, file), "r") as f:
+                    docs.append(f.read())
+                categoria.append(r.replace(path, ''))
+        return dict([('docs', docs), ('categoria', categoria)])
 
     # Transforma el texto de cada documento en una lista de palabras
     def lista_palabras(self):
@@ -58,7 +72,7 @@ class Docs():
                 # Con re podemos meter patrones, pero tiene ya patrones
                 # predefinidos, con \w coge todas las palabras y quita los
                 # símbolos
-                palabras = re.findall(r"[\w]+", documento)
+                palabras = re.findall(r"\w+", documento)
                 # Esto es por si queremos ordenar las palabras
                 # palabras = sorted([i.lower() for i in palabras])
                 palabras = [i.lower() for i in palabras]
@@ -83,19 +97,25 @@ class Docs():
     def vocabulario(self):
         docs = self.lista_palabras()
         res = OrderedDict()
+        lista_vocabulario = []
         for categoria in self.categorias:
             lista_docs = []
             for documentos in docs[categoria]:
                 for palabras in documentos:
-                    lista_docs.append(palabras)
+                    if palabras not in lista_vocabulario:
+                        lista_docs.append(palabras)
             c = Counter(lista_docs).most_common(20)
             res[categoria] = [c[i][0] for i in range(len(c))]
+            # Va añadiendo palabras a la lista de vocabulario para comprobar en el if que no se
+            # repiten
+            lista_vocabulario = [palabra for documentos in res.values() for palabra in documentos]
         return res
 
+    # Guarda el documento en la carpeta Datos
     def documentos_csv(self):
         frec = self.frecuencia()
         vocabulario = self.vocabulario()
-        documentocsv= 'documentos.csv'
+        documentocsv = 'Datos/documentos.csv'
         csvsalida = open(documentocsv, 'w', newline='')
         lista_palabras = [palabra for documentos in vocabulario.values() for palabra in documentos]
         lista_palabras.append('Categoria')
@@ -122,28 +142,36 @@ class Docs():
 
         print("Documento creado en el fichero {}".format(documentocsv))
 
-    # Nº de veces que aparece una palabra en documentos distintos
+
+        # Nº de veces que aparece una palabra en documentos distintos
+
     def frecuencia_documental(self):
         docs = self.lista_palabras()
-        frec = {}
-        for i in range(0, len(docs)):
-            for palabra in docs[i]:
-                # print("Documento {}".format(i), palabra)
-                if palabra in frec.keys() and frec[palabra][0] != i:
-                    frec[palabra][1] += 1
-                else:
-                    frec[palabra] = [i, 1]
-        for palabra in frec.keys():
-            frec[palabra] = frec.get(palabra)[1]
-        return frec
+        res = OrderedDict()
+        lista_docs = []
+        for categoria in self.categorias:
+            for documentos in docs[categoria]:
+                for palabras in documentos:
+                    lista_docs.append(palabras)
+            c = Counter(lista_docs).items()
+            # la iteración siguiente me ordena las palabras por el nº de repeticiones
+            # res[categoria] = sorted(c, key=lambda palabra: palabra[1], reverse=True)
+            res[categoria] = c
+        return res
 
     # log(N/frec_documental) -> N=nº total de documentos
     def frecuencia_documental_inversa(self):
         frec_doc = self.frecuencia_documental()
-        res = {}
-        for palabra in frec_doc:
-            # print("{} = {}".format(palabra,self.num_docs/frec_doc[palabra]))
-            res[palabra] = math.log10(self.num_docs / frec_doc[palabra])
+        res = OrderedDict()
+        vocabulario = self.vocabulario()
+        lista_vocabulario = [palabra for documentos in vocabulario.values() for palabra in documentos]
+        for categoria in self.categorias:
+            for palabra in frec_doc[categoria]:
+                pal = palabra[0]
+                # print("{} = {}".format(palabra,self.num_docs/frec_doc[palabra]))
+                if pal in lista_vocabulario:
+                    n = palabra[1]
+                    res[palabra[0]] = round(math.log10(self.num_docs / n), 4)
         return res
 
     # Para cada documento tenemos que calcular el peso:
@@ -152,28 +180,55 @@ class Docs():
         frec = self.frecuencia()
         frec_inversa = self.frecuencia_documental_inversa()
         pesos = []
-        for documentos in range(len(frec)):
-            peso = []
-            for tuplas in range(len(frec[documentos])):
-                # print("inv",frec_inversa.get(frec[i][0]))
-                peso.append((frec[documentos][tuplas][0],
-                             frec_inversa.get(frec[documentos][tuplas][0]) *
-                             frec[documentos][tuplas][1]))
-            pesos.append(peso)
-        return pesos
-
-    # 2.2 Proximidad entre documentos y consultas
-    # numpy.dot(lista_w[1], v) -> Multiplicación escalar
-    def proximidad(self, v):
-        pesos = self.peso()
-        lista_w = []
-        [lista_w.append([i[1] for i in w]) for w in pesos]
         res = []
-        for i in range(len(lista_w)):
-            # print("divisor{}:".format(i), np.dot(lista_w[i], v))
-            # print("dividendo{}:".format(i), (math.sqrt(np.dot(lista_w[i], lista_w[i])) *
-            #                                  math.sqrt(np.dot(v, v))))
-            res.append(np.dot(lista_w[i], v) /
-                       (math.sqrt(np.dot(lista_w[i], lista_w[i])) *
-                        math.sqrt(np.dot(v, v))))
+        n = 0
+        for categoria in self.categorias:
+            for documentos in frec[categoria]:
+                peso = []
+                dict_doc = dict(documentos)
+                for tupla in list(frec_inversa.items()):
+                    if tupla[0] in dict_doc.keys():
+                        peso.append((tupla[0], tupla[1] * dict_doc.get(tupla[0])))
+                    else:
+                        peso.append((tupla[0], 0))
+                pesos.append(peso)
+            res = pesos
         return res
+
+    def pesos_csv(self):
+        pesos = self.peso()
+        vocabulario = self.vocabulario()
+        documentocsv = 'Datos/pesos.csv'
+        csvsalida = open(documentocsv, 'w', newline='')
+        lista_palabras = [palabra for documentos in vocabulario.values() for palabra in documentos]
+        lista_palabras.append('Categoria')
+        salida = csv.DictWriter(csvsalida, fieldnames=lista_palabras)
+        # Indica que hay cabecera, es obligatorio con DictWriter
+        salida.writeheader()
+        # Rellena el diccionario con todas las palabras, para el header del csv
+        valores = OrderedDict()
+        for palabra in lista_palabras:
+            valores.update({palabra: 0})
+        # Rellenamos con el vector peso en cada fila
+        for categoria in self.categorias:
+            for documentos in pesos:
+                # Resetea a 0 los valores de las claves para cada doc
+                valores = dict.fromkeys(valores, 0)
+                for palabras in documentos:
+                    if palabras[0] in lista_palabras:
+                        valores[palabras[0]] = palabras[1]
+                valores['Categoria'] = categoria
+                salida.writerow(valores)
+        del salida
+        csvsalida.close()
+
+        print("Creado fichero {} que contiene los pesos de los documentos".format(documentocsv))
+
+pruebas = Docs()
+# print(pruebas.vocabulario())
+# print("Frecuencia:\n", pruebas.frecuencia())
+# print("Frec documental:\n", pruebas.frecuencia_documental())
+# print("Frec inversa:\n", pruebas.frecuencia_documental_inversa())
+# print("Peso:\n", pruebas.peso())
+print("Peso a csv:\n", pruebas.pesos_csv())
+# print("Proximidad:\n", pruebas.proximidad(pruebas.peso()))
