@@ -1,7 +1,6 @@
 from io import open
 from collections import Counter
 from collections import OrderedDict
-import numpy as np
 import math
 import os
 import re  # Expresiones regulares
@@ -176,6 +175,7 @@ class Docs():
 
     # Para cada documento tenemos que calcular el peso:
     # Wi= frecuencia · frec_doc_inversa
+    #TODO en el csv hay mas docs de cada categoria
     def peso(self):
         frec = self.frecuencia()
         frec_inversa = self.frecuencia_documental_inversa()
@@ -224,11 +224,11 @@ class Docs():
 
         print("Creado fichero {} que contiene los pesos de los documentos".format(documentocsv))
 
-pruebas = Docs()
+# pruebas = Docs()
 # print(pruebas.vocabulario())
 # print("Frecuencia:\n", pruebas.frecuencia())
 # print("Frec documental:\n", pruebas.frecuencia_documental())
 # print("Frec inversa:\n", pruebas.frecuencia_documental_inversa())
 # print("Peso:\n", pruebas.peso())
-print("Peso a csv:\n", pruebas.pesos_csv())
+# print("Peso a csv:\n", pruebas.pesos_csv())
 # print("Proximidad:\n", pruebas.proximidad(pruebas.peso()))

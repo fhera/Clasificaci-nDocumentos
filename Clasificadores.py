@@ -6,6 +6,9 @@ class Clasificadores():
     conKNN = ClasificacionKNN.ClasificacionKNN()
     entrenamiento= conKNN.conjunto_entrenamiento
 
+    def __init__(self):
+        pass
+
     def KNN(self, entrenamiento = entrenamiento, doc=None):
         print("-----------ENTRENANDO ALGORITMO KNN-----------")
         # docs_entrenamiento, docs_prueba = model_selection.train_test_split(
@@ -38,6 +41,8 @@ class Clasificadores():
         for url in urls:
             print('La predicción de la categoría es: ' + self.Predecir(url, classifier))
 
+clasificador = Clasificadores()
+clfKNN = clasificador.KNN()
 
 # c.Mostrar_predicciones([
 #     'http://www.abc.es/economia/abci-bufetes-intentan-accionistas-bankia-vayan-juicio-201602190746_noticia.html',
