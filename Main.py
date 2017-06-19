@@ -1,12 +1,7 @@
 import Genera_documentos
 from io import open
 import Docs
-import ClasificacionKNN
-import Clasificadores
-import numpy as np
-import csv
-import pandas
-import re
+from Clasificadores import Clasificadores
 from newspaper import Article
 
 ############# Generador de documentación ############
@@ -15,7 +10,7 @@ from newspaper import Article
 
 
 ############# Clase Documentos #################
-doc = Docs.Docs()
+# doc = Docs.Docs()
 
 # doc.documentos_csv()
 # print("Listamos las palabras de los documentos:\n", doc.lista_palabras())
@@ -23,57 +18,70 @@ doc = Docs.Docs()
 
 # print(doc.vocabulario())
 # print(doc.vocabulario_para_csv())
-# print("Frecuencia docs:\n", doc.frecuencia_documental())
-# print("Frecuencia docs inversa:\n", doc.frecuencia_documental_inversa())
 # print("Peso:\n", doc.peso())
-
-
-# Cuenta las palabras de la categoria indicada
-# print(len(doc.lista_palabras()['Deportes']))
-
-####### 4.5 Conjunto entrenamiento  ########
-#### NAIVE BAYES ####
-
-
-#### KNN ####
-conj_entrenamiento =
 
 
 ####### 4.7 Realización de experimentos  ########
 
-# url = "http://www.abc.es/cultura/arte/abci-prado-y-thyssen-salen-armario-201706150132_noticia.html"
-# articulo = Article(url)
-# articulo.download()
-# articulo.parse()
-# nuevo_ejemplo = articulo.text
+url = "http://www.abc.es/cultura/arte/abci-prado-y-thyssen-salen-armario-201706150132_noticia.html"
+articulo = Article(url)
+articulo.download()
+articulo.parse()
+nuevo_ejemplo = articulo.text
+
+###### Llamada a los métodos finales ######
+
+# clasificador = Clasificadores(2)
+# clfKNN = clasificador.KNN(doc=nuevo_ejemplo)
+# clfKNN = clasificador.KNN()
+# clasificador.Mostrar_predicciones(clfKNN,
+#                                   [
+#                                       'http://www.abc.es/economia/abci-bufetes-intentan-accionistas-bankia-vayan-juicio-201602190746_noticia.html',
+#                                       'http://www.elconfidencial.com/deportes/futbol/2016-02-19/torres-atletico-cope_1154857/',
+#                                       'http://sevilla.abc.es/deportes/alfinaldelapalmera/noticias/fichajes-betis/betis-pide-tres-millones-petros-130734-1497644020.html',
+#                                       'http://sevilla.abc.es/deportes/alfinaldelapalmera/noticias/fichajes-betis/betis-no-mas-ofertas-villamarin-130737-1497644996.html',
+#                                       'http://www.abc.es/cultura/arte/abci-crece-familia-duques-osuna-coleccion-prado-201706170138_noticia.html'
+#                                   ])
+
+
 
 ### Metemos las frecuencias de palabras en un archivo ########
 # frec=doc.frecuencia()
 # file = open('frecuencia.txt', 'w', encoding='utf8')
 # file.write(str(frec))
 # file.close()
+import pandas
+from sklearn import preprocessing
+from sklearn import naive_bayes
+
+docu = pandas.read_csv('Datos/documentos.csv', header=0)
+########
+le = preprocessing.LabelEncoder()  # Creamos un codificador de etiquetas
+codificadores = []
+docs_codificado = pandas.DataFrame()
+
+for variable, valores in docu.iteritems():
+    le = preprocessing.LabelEncoder()
+    le.fit(valores)
+    # print('Codificación de valores para {}: {}'.format(variable, le.classes_))
+    codificadores.append(le)
+    docs_codificado[variable] = le.transform(valores)
 
 
 
-##### Vectorizar un texto ###
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.neighbors import KNeighborsClassifier
+###############
+ohe = preprocessing.OneHotEncoder(sparse=False)
+datos_entrenamiento = docs_codificado.loc[:, 'arte':'isla']
+datos_entrenamiento_nb = ohe.fit_transform(datos_entrenamiento)
+clases_entrenamiento = docs_codificado['Categoria']
 
-vectorizer = CountVectorizer(min_df=1)
+clasif_NB = naive_bayes.MultinomialNB(alpha=1.0)
 
-documents = []
-tipos = []
+clasif_NB.fit(datos_entrenamiento_nb, clases_entrenamiento)
+###############
 
-X = vectorizer.fit_transform(documents)
+nuevo_ejemplo_codif = [le.transform([valor])
+                       for valor, le in zip(nuevo_ejemplo, codificadores)]
+nuevo_ejemplo_nb = ohe.transform(nuevo_ejemplo_codif)
 
-# Con esto tenemos el documento vectorizado
-# print(X.toarray())
-np.set_printoptions(threshold=np.nan)  # Imprime la matriz entera
-
-tfid = TfidfVectorizer(stop_words=doc.palabras_comunes)
-
-X_train = tfid.fit_transform(documents)
-Y_train = tipos
-clf = KNeighborsClassifier(n_neighbors=10)
-clf.fit(X_train, Y_train)
+print(clasif_NB.predict(nuevo_ejemplo_nb))

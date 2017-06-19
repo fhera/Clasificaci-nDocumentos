@@ -2,6 +2,7 @@ from Docs import Docs
 from collections import OrderedDict
 import pandas
 import csv
+from sklearn import preprocessing
 
 
 class ClasificacionNB():
@@ -13,17 +14,29 @@ class ClasificacionNB():
     # Capturamos el archivo csv y lo convertimos en un DataFrame
     voc = pandas.read_csv('Datos/documentos.csv', header=0)
 
-    # voc = pandas.read_csv('pruebasNB/voc.csv', header=0)
-    # vocabulario = ['Chino', 'Pekin', 'Shangai', 'Macao', 'Tokio', 'Japon', 'Categoria']
-    # categorias = ['ch', 'j']
+    def __init__(self):
+        print("\n-----------PREPROCESADO-----------")
+        # # Vamos a ir llamando los métodos necesarios para el preprocesado del texto situado en la clase Docs.py
+        # self.doc.documentos_csv()
+        # print("Un momento que estamos analizando los documentos...")
+        # self.probabilidad_csv()
+
+        ## PRUEBAS
+
+        ohe = preprocessing.OneHotEncoder(sparse=False)
+        datos_entrenamiento = ohe.fit_transform(self.voc.loc[:,:'Categoria'])
+        datos_prueba_nb = ohe.fit_transform(self.voc)
+        pass
 
     def Probabilidades_categorias(self):
+        print("Estamos calculando las probabilidades de las categorias.")
         res = []
         for categoria in self.categorias:
             res.append((categoria, len(self.voc[self.voc['Categoria'] == categoria]) / self.voc['Categoria'].count()))
         return res
 
     def Probabilidades_vocabulario(self):
+        print("\nAhora estamos con las probabilidades del vocabulario.")
         res = OrderedDict()
         vocabulario = self.lista_vocabulario
         for categoria in self.categorias:
@@ -58,6 +71,7 @@ class ClasificacionNB():
     def probabilidad_csv(self):
         pvoc = self.Probabilidades_vocabulario()
         pcat = self.Probabilidades_categorias()
+        print("\n-----------CREAMOS EL CONJUNTO DE ENTRENAMIENTO-----------")
         documentocsv = 'Datos/probabilidad.csv'
         csvsalida = open(documentocsv, 'w', newline='')
         lista_palabras = self.lista_vocabulario
@@ -82,10 +96,7 @@ class ClasificacionNB():
 
         del salida
         csvsalida.close()
-        print("Creado fichero '{}' que contiene las probabilidades de las categorias".format(documentocsv))
+        print("Creando fichero '{}' que contiene las probabilidades de las categorias".format(documentocsv))
 
 
-c = ClasificacionNB()
-# print("Probabilidades de las categorias:\n", c.Probabilidades_categorias())
-# print("Probabilidades del vocabulario:\n", c.Probabilidades_vocabulario())
-c.probabilidad_csv()
+# c = ClasificacionNB()

@@ -1,30 +1,51 @@
 from sklearn.neighbors import KNeighborsClassifier
 from newspaper import Article
-import ClasificacionKNN
+from ClasificacionKNN import ClasificacionKNN
+from ClasificacionNB import ClasificacionNB
+from sklearn import naive_bayes
+import Docs
+
 
 class Clasificadores():
-    conKNN = ClasificacionKNN.ClasificacionKNN()
-    entrenamiento= conKNN.conjunto_entrenamiento
+    doc = Docs.Docs()
+    entrenamientoKNN = []
+    entrenamientoNB = []
 
-    def __init__(self):
-        pass
+    def __init__(self, opcion):
+        if  opcion== 1:
+            print("Has elegido KNN.")
+            conKNN = ClasificacionKNN()
+            self.entrenamientoKNN = conKNN.conjunto_entrenamiento
+            categoria = conKNN.categorias
+            tfid = conKNN.tfid
+        elif opcion==2:
+            print("Has elegido Naive Bayes, este método es más lento.")
+            conNB = ClasificacionNB()
+            self.entrenamientoNB = conNB.conjunto_entrenamiento
+            categoria = conNB.categorias
+            tfid = conNB.tfid
 
-    def KNN(self, entrenamiento = entrenamiento, doc=None):
-        print("-----------ENTRENANDO ALGORITMO KNN-----------")
-        # docs_entrenamiento, docs_prueba = model_selection.train_test_split(
-        #     self.docs_codificados, test_size=.33, random_state=12345,
-        #     stratify=self.categorias)
+
+
+    def NB(self, entrenamiento=entrenamientoNB, doc=None):
+        clasif_NB = naive_bayes.MultinomialNB(alpha=1.0)
+
+    def KNN(self, entrenamiento=entrenamientoKNN, doc=None):
+
+        print("\n-----------ENTRENANDO ALGORITMO KNN-----------")
         docs_entrenamiento = entrenamiento
-        cat_entrenamiento =
+        cat_entrenamiento = self.categoria
         clf = KNeighborsClassifier(n_neighbors=14)
 
         clf.fit(docs_entrenamiento, cat_entrenamiento)
-
-        test = self.doc.leer_doc("test")
-        docs_prueba = self.tfid.fit_transform(test['docs'])
-        cat_prueba = test['categoria']
-
-        print('Porcentaje de acierto sobre 1: %0.3f' % clf.score(docs_prueba, cat_prueba))
+        if doc != None:
+            test = self.tfid.transform([doc])
+            print("La predicción de la categoría es:",clf.predict(test)[0])
+        else:
+            test = self.doc.leer_doc("test")
+            docs_prueba = self.tfid.fit_transform(test['docs'])
+            cat_prueba = test['categoria']
+            print('Porcentaje de acierto sobre : {}%'.format(round(clf.score(docs_prueba, cat_prueba),3) * 100))
         return clf
 
     def Predecir(self, url, classifier):
@@ -36,18 +57,7 @@ class Clasificadores():
         X_test = self.tfid.transform([article])
         return classifier.predict(X_test)[0]
 
-    def Mostrar_predicciones(self, urls, classifier):
-        print("-----------PREDICCIONES DE LOS ARTICULOS NUEVOS-----------")
+    def Mostrar_predicciones(self,classifier, urls):
+        print("\n-----------PREDICCIONES DE LOS ARTICULOS NUEVOS-----------")
         for url in urls:
-            print('La predicción de la categoría es: ' + self.Predecir(url, classifier))
-
-clasificador = Clasificadores()
-clfKNN = clasificador.KNN()
-
-# c.Mostrar_predicciones([
-#     'http://www.abc.es/economia/abci-bufetes-intentan-accionistas-bankia-vayan-juicio-201602190746_noticia.html',
-#     'http://www.elconfidencial.com/deportes/futbol/2016-02-19/torres-atletico-cope_1154857/',
-#     'http://sevilla.abc.es/deportes/alfinaldelapalmera/noticias/fichajes-betis/betis-pide-tres-millones-petros-130734-1497644020.html',
-#     'http://sevilla.abc.es/deportes/alfinaldelapalmera/noticias/fichajes-betis/betis-no-mas-ofertas-villamarin-130737-1497644996.html',
-#     'http://www.abc.es/cultura/arte/abci-crece-familia-duques-osuna-coleccion-prado-201706170138_noticia.html'
-# ], clasificador)
+            print('La predicción de la categoría es:', self.Predecir(url, classifier))

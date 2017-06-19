@@ -1,6 +1,7 @@
 from io import open
 from collections import Counter
 from collections import OrderedDict
+from collections import defaultdict
 import math
 import os
 import re  # Expresiones regulares
@@ -79,6 +80,20 @@ class Docs():
             res[categoria] = lista_palabras
         return res
 
+    # Crea lista de palabras en minúsculas pasado un documento.
+    def palabras(self, doc):
+        return (palabras.lower() for palabras in re.findall(r"\w+", doc))
+
+    # Cuenta las palabras y los mete en un dict k=palabra v=repeticiones
+    def frec(self, palabras):
+        f = defaultdict(int)
+        for palabra in palabras:
+            f[palabra] += 1
+        return f
+
+    def frec_palabras(self, doc):
+        return self.frec(self.palabras(doc))
+
     # Frecuencia con la que aparece una palabra en cada documento
     def frecuencia(self):
         docs = self.lista_palabras()
@@ -140,89 +155,6 @@ class Docs():
         csvsalida.close()
 
         print("Documento creado en el fichero {}".format(documentocsv))
-
-
-        # Nº de veces que aparece una palabra en documentos distintos
-
-    def frecuencia_documental(self):
-        docs = self.lista_palabras()
-        res = OrderedDict()
-        lista_docs = []
-        for categoria in self.categorias:
-            for documentos in docs[categoria]:
-                for palabras in documentos:
-                    lista_docs.append(palabras)
-            c = Counter(lista_docs).items()
-            # la iteración siguiente me ordena las palabras por el nº de repeticiones
-            # res[categoria] = sorted(c, key=lambda palabra: palabra[1], reverse=True)
-            res[categoria] = c
-        return res
-
-    # log(N/frec_documental) -> N=nº total de documentos
-    def frecuencia_documental_inversa(self):
-        frec_doc = self.frecuencia_documental()
-        res = OrderedDict()
-        vocabulario = self.vocabulario()
-        lista_vocabulario = [palabra for documentos in vocabulario.values() for palabra in documentos]
-        for categoria in self.categorias:
-            for palabra in frec_doc[categoria]:
-                pal = palabra[0]
-                # print("{} = {}".format(palabra,self.num_docs/frec_doc[palabra]))
-                if pal in lista_vocabulario:
-                    n = palabra[1]
-                    res[palabra[0]] = round(math.log10(self.num_docs / n), 4)
-        return res
-
-    # Para cada documento tenemos que calcular el peso:
-    # Wi= frecuencia · frec_doc_inversa
-    #TODO en el csv hay mas docs de cada categoria
-    def peso(self):
-        frec = self.frecuencia()
-        frec_inversa = self.frecuencia_documental_inversa()
-        pesos = []
-        res = []
-        n = 0
-        for categoria in self.categorias:
-            for documentos in frec[categoria]:
-                peso = []
-                dict_doc = dict(documentos)
-                for tupla in list(frec_inversa.items()):
-                    if tupla[0] in dict_doc.keys():
-                        peso.append((tupla[0], tupla[1] * dict_doc.get(tupla[0])))
-                    else:
-                        peso.append((tupla[0], 0))
-                pesos.append(peso)
-            res = pesos
-        return res
-
-    def pesos_csv(self):
-        pesos = self.peso()
-        vocabulario = self.vocabulario()
-        documentocsv = 'Datos/pesos.csv'
-        csvsalida = open(documentocsv, 'w', newline='')
-        lista_palabras = [palabra for documentos in vocabulario.values() for palabra in documentos]
-        lista_palabras.append('Categoria')
-        salida = csv.DictWriter(csvsalida, fieldnames=lista_palabras)
-        # Indica que hay cabecera, es obligatorio con DictWriter
-        salida.writeheader()
-        # Rellena el diccionario con todas las palabras, para el header del csv
-        valores = OrderedDict()
-        for palabra in lista_palabras:
-            valores.update({palabra: 0})
-        # Rellenamos con el vector peso en cada fila
-        for categoria in self.categorias:
-            for documentos in pesos:
-                # Resetea a 0 los valores de las claves para cada doc
-                valores = dict.fromkeys(valores, 0)
-                for palabras in documentos:
-                    if palabras[0] in lista_palabras:
-                        valores[palabras[0]] = palabras[1]
-                valores['Categoria'] = categoria
-                salida.writerow(valores)
-        del salida
-        csvsalida.close()
-
-        print("Creado fichero {} que contiene los pesos de los documentos".format(documentocsv))
 
 # pruebas = Docs()
 # print(pruebas.vocabulario())

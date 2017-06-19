@@ -68,7 +68,7 @@ palabras_comunes = ['a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde',
                     'me', 'lo', 'pero', 'qué', 'también', 'te', 'yo', 'tu', 'el', 'nosotros', 'vosotros', 'después',
                     'se', 'o', 'n', 's', 'son', 'dos']
 
-tfid = TfidfVectorizer(stop_words=palabras_comunes)
+tfid = TfidfVectorizer(stop_words=palabras_comunes, vocabulary=lista_vocabulario)
 
 X_train = tfid.fit_transform(documents)
 y_train = labels
@@ -107,4 +107,4 @@ show_predicted_categories(
         'http://sevilla.abc.es/deportes/alfinaldelapalmera/noticias/fichajes-betis/betis-pide-tres-millones-petros-130734-1497644020.html',
         'http://sevilla.abc.es/deportes/alfinaldelapalmera/noticias/fichajes-betis/betis-no-mas-ofertas-villamarin-130737-1497644996.html',
         'http://www.abc.es/cultura/arte/abci-crece-familia-duques-osuna-coleccion-prado-201706170138_noticia.html'
-    ],clf)
+    ], clf)
