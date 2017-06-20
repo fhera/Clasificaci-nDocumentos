@@ -3,6 +3,7 @@ from io import open
 import Docs
 from Clasificadores import Clasificadores
 from newspaper import Article
+from collections import Counter
 
 ############# Generador de documentación ############
 # 4.3 Obtener un conjunto de textos de entrenamiento (y de test)
@@ -20,6 +21,12 @@ from newspaper import Article
 # print(doc.vocabulario_para_csv())
 # print("Peso:\n", doc.peso())
 
+### Metemos las frecuencias de palabras en un archivo ########
+# frec=doc.frecuencia()
+# file = open('frecuencia.txt', 'w', encoding='utf8')
+# file.write(str(frec))
+# file.close()
+
 
 ####### 4.7 Realización de experimentos  ########
 
@@ -29,9 +36,10 @@ articulo.download()
 articulo.parse()
 nuevo_ejemplo = articulo.text
 
+
 ###### Llamada a los métodos finales ######
 
-# clasificador = Clasificadores(2)
+clasificador = Clasificadores()
 # clfKNN = clasificador.KNN(doc=nuevo_ejemplo)
 # clfKNN = clasificador.KNN()
 # clasificador.Mostrar_predicciones(clfKNN,
@@ -43,45 +51,4 @@ nuevo_ejemplo = articulo.text
 #                                       'http://www.abc.es/cultura/arte/abci-crece-familia-duques-osuna-coleccion-prado-201706170138_noticia.html'
 #                                   ])
 
-
-
-### Metemos las frecuencias de palabras en un archivo ########
-# frec=doc.frecuencia()
-# file = open('frecuencia.txt', 'w', encoding='utf8')
-# file.write(str(frec))
-# file.close()
-import pandas
-from sklearn import preprocessing
-from sklearn import naive_bayes
-
-docu = pandas.read_csv('Datos/documentos.csv', header=0)
-########
-le = preprocessing.LabelEncoder()  # Creamos un codificador de etiquetas
-codificadores = []
-docs_codificado = pandas.DataFrame()
-
-for variable, valores in docu.iteritems():
-    le = preprocessing.LabelEncoder()
-    le.fit(valores)
-    # print('Codificación de valores para {}: {}'.format(variable, le.classes_))
-    codificadores.append(le)
-    docs_codificado[variable] = le.transform(valores)
-
-
-
-###############
-ohe = preprocessing.OneHotEncoder(sparse=False)
-datos_entrenamiento = docs_codificado.loc[:, 'arte':'isla']
-datos_entrenamiento_nb = ohe.fit_transform(datos_entrenamiento)
-clases_entrenamiento = docs_codificado['Categoria']
-
-clasif_NB = naive_bayes.MultinomialNB(alpha=1.0)
-
-clasif_NB.fit(datos_entrenamiento_nb, clases_entrenamiento)
-###############
-
-nuevo_ejemplo_codif = [le.transform([valor])
-                       for valor, le in zip(nuevo_ejemplo, codificadores)]
-nuevo_ejemplo_nb = ohe.transform(nuevo_ejemplo_codif)
-
-print(clasif_NB.predict(nuevo_ejemplo_nb))
+clasificador.NB(doc=nuevo_ejemplo)

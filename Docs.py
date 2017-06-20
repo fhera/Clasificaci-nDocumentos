@@ -6,6 +6,7 @@ import math
 import os
 import re  # Expresiones regulares
 import csv
+from newspaper import Article
 
 
 class Docs():
@@ -95,8 +96,11 @@ class Docs():
         return self.frec(self.palabras(doc))
 
     # Frecuencia con la que aparece una palabra en cada documento
-    def frecuencia(self):
-        docs = self.lista_palabras()
+    def frecuencia(self, lista_palabras=None):
+        if lista_palabras == None:
+            docs = self.lista_palabras()
+        else:
+            docs = lista_palabras
         res = OrderedDict()
         for categoria in self.categorias:
             lista_docs = []
@@ -155,6 +159,8 @@ class Docs():
         csvsalida.close()
 
         print("Documento creado en el fichero {}".format(documentocsv))
+
+
 
 # pruebas = Docs()
 # print(pruebas.vocabulario())

@@ -17,16 +17,9 @@ class ClasificacionNB():
     def __init__(self):
         print("\n-----------PREPROCESADO-----------")
         # # Vamos a ir llamando los métodos necesarios para el preprocesado del texto situado en la clase Docs.py
-        # self.doc.documentos_csv()
-        # print("Un momento que estamos analizando los documentos...")
-        # self.probabilidad_csv()
-
-        ## PRUEBAS
-
-        ohe = preprocessing.OneHotEncoder(sparse=False)
-        datos_entrenamiento = ohe.fit_transform(self.voc.loc[:,:'Categoria'])
-        datos_prueba_nb = ohe.fit_transform(self.voc)
-        pass
+        self.doc.documentos_csv()
+        print("Un momento que estamos analizando los documentos...")
+        self.probabilidad_csv()
 
     def Probabilidades_categorias(self):
         print("Estamos calculando las probabilidades de las categorias.")
@@ -70,12 +63,12 @@ class ClasificacionNB():
 
     def probabilidad_csv(self):
         pvoc = self.Probabilidades_vocabulario()
-        pcat = self.Probabilidades_categorias()
+        # pcat = self.Probabilidades_categorias()
         print("\n-----------CREAMOS EL CONJUNTO DE ENTRENAMIENTO-----------")
         documentocsv = 'Datos/probabilidad.csv'
         csvsalida = open(documentocsv, 'w', newline='')
         lista_palabras = self.lista_vocabulario
-        lista_palabras.append('pcategoria')
+        lista_palabras.append('Categoria')
         salida = csv.DictWriter(csvsalida, fieldnames=lista_palabras)
         # Indica que hay cabecera, es obligatorio con DictWriter
         salida.writeheader()
@@ -90,13 +83,10 @@ class ClasificacionNB():
             for tupla in lista_tupla:
                 valores[tupla[0]] = tupla[1]
 
-            valor = [x[1] for x in pcat if x[0] == categoria]
-            valores['pcategoria'] = valor[0]
+            # valor = [x[1] for x in pcat if x[0] == categoria]
+            valores['Categoria'] = categoria
             salida.writerow(valores)
 
         del salida
         csvsalida.close()
         print("Creando fichero '{}' que contiene las probabilidades de las categorias".format(documentocsv))
-
-
-# c = ClasificacionNB()
