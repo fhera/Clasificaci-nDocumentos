@@ -19,7 +19,7 @@ class ClasificacionKNN():
     tfid = []
     conjunto_entrenamiento = []
 
-    def __init__(self, doc=documentos):
+    def __init__(self):
         print("-----------PREPROCESADO-----------")
         # Vamos a ir llamando los métodos necesarios para el preprocesado del texto situado en la clase Docs.py
         self.doc.documentos_csv()
@@ -39,10 +39,10 @@ class ClasificacionKNN():
         self.conjunto_entrenamiento = documentos_codificado
         # print("Vectores del documento sin codificar:\n", tfid.get_feature_names())
 
-        print("\n-----------CREAMOS EL CONJUNTO DE ENTRENAMIENTO-----------")
+        print("\n-----------CREAMOS EL CONJUNTO DE ENTRENAMIENTO KNN-----------")
         # Vamos a dividir el conjunto de entrenamiento y el conjunto de test
         ### Metemos el conjunto de entrenamiento en un archivo ########
-        documento_salida = 'Datos/conjunto_entrenamientoKNN.txt'
+        documento_salida = 'Datos/pesos.txt'
         file = open(documento_salida, 'w', newline='')
         file.write(str(documentos_codificado.todense()))
         file.close()

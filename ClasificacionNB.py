@@ -64,7 +64,7 @@ class ClasificacionNB():
     def probabilidad_csv(self):
         pvoc = self.Probabilidades_vocabulario()
         # pcat = self.Probabilidades_categorias()
-        print("\n-----------CREAMOS EL CONJUNTO DE ENTRENAMIENTO-----------")
+        print("\n-----------CREAMOS EL CONJUNTO DE ENTRENAMIENTO NB-----------")
         documentocsv = 'Datos/probabilidad.csv'
         csvsalida = open(documentocsv, 'w', newline='')
         lista_palabras = self.lista_vocabulario
